@@ -702,7 +702,7 @@ body.intro-done .burger{opacity:1;transform:none}
 .intro.gta{background:#000}
 .intro.gta .sky,.intro.gta .ground{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity,filter}
 .intro.gta .img{position:absolute;inset:-8%;background:url(assets/journey-ending.jpg) center/cover no-repeat;will-change:transform}
-.intro.gta .ground .img{background-image:url(assets/intro-poster.jpg)}
+.intro.gta .ground .img{background-image:url(assets/intro-poster.webp)}
 .intro.gta .sky{opacity:0;transform:scale(1.08);animation:skyin .7s ease .2s forwards paused,dive 1.35s cubic-bezier(.75,0,1,.55) 1.15s forwards paused}
 @keyframes skyin{to{opacity:1;transform:scale(1.12)}}
 @keyframes dive{0%{opacity:1;transform:scale(1.12);filter:brightness(1) saturate(.85)}55%{opacity:1;filter:brightness(1.35) saturate(.7)}100%{opacity:0;transform:scale(9);filter:brightness(3.2) saturate(.4)}}
@@ -856,6 +856,17 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
 .bcheck-out.no{border-color:rgba(217,241,255,.3)}
 .bcheck-out a{color:var(--accent)}
 @media (max-width:720px){.bcheck{grid-template-columns:1fr}}
+
+
+/* ---------- Subpages: contact strip after the intro block (v37) ---------- */
+body.sub main > .block.cta-mid > .rv{display:grid;grid-template-columns:1fr auto;gap:24px 40px;align-items:center;padding:clamp(22px,3vw,36px);border:1px solid rgba(242,210,27,.35);border-radius:12px;background:linear-gradient(160deg,rgba(242,210,27,.1),rgba(242,210,27,.02)),rgba(18,26,40,.6)}
+body.sub main > .block.cta-mid{padding-top:0}
+.cta-mid h2.t{font-size:clamp(26px,3vw,40px);margin-top:0;max-width:none}
+body.sub main > section{scroll-margin-top:calc(var(--hdr,64px) + 16px)}
+.cta-mid .lead{margin-top:10px;font-size:16px;max-width:52ch}
+.cta-mid .hero-cta{margin-top:0;flex-direction:column;align-items:stretch}
+.cta-mid .hero-cta .btn{justify-content:center}
+@media (max-width:820px){body.sub main > .block.cta-mid > .rv{grid-template-columns:1fr}.cta-mid .hero-cta{flex-direction:row;flex-wrap:wrap}}
 
 /* ---------- Subpages ---------- */
 body.sub{opacity:1}

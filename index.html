@@ -33,8 +33,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <!-- The poster is the first thing on screen: preload the one this device will use -->
-<link rel="preload" as="image" href="assets/intro-poster-portrait.webp" type="image/webp" media="((max-width: 720px) and (orientation: portrait)), ((orientation: portrait) and (pointer: coarse))">
-<link rel="preload" as="image" href="assets/intro-poster.webp" type="image/webp" media="(orientation: landscape), ((min-width: 721px) and (pointer: fine))">
+<link rel="preload" as="image" fetchpriority="high" href="assets/intro-poster-portrait.webp" type="image/webp" media="((max-width: 720px) and (orientation: portrait)), ((orientation: portrait) and (pointer: coarse))">
+<link rel="preload" as="image" fetchpriority="high" href="assets/intro-poster.webp" type="image/webp" media="(orientation: landscape), ((min-width: 721px) and (pointer: fine))">
 <style>
 :root{--canvas:#070b12;--panel:#121a28;--accent:#f2d21b;--accent-hover:#ffe14a;--led:#3aa6ff;--text:#eef2f7;--text-2:#9aa8bb;--display:"Barlow Condensed","Arial Narrow",Impact,system-ui,sans-serif;--body:Barlow,system-ui,"Segoe UI",Roboto,sans-serif;--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--holo:#d9f1ff}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -739,7 +739,7 @@ body.intro-done .burger{opacity:1;transform:none}
 .intro.gta{background:#000}
 .intro.gta .sky,.intro.gta .ground{position:absolute;inset:0;overflow:hidden;will-change:transform,opacity,filter}
 .intro.gta .img{position:absolute;inset:-8%;background:url(assets/journey-ending.jpg) center/cover no-repeat;will-change:transform}
-.intro.gta .ground .img{background-image:url(assets/intro-poster.jpg)}
+.intro.gta .ground .img{background-image:url(assets/intro-poster.webp)}
 .intro.gta .sky{opacity:0;transform:scale(1.08);animation:skyin .7s ease .2s forwards paused,dive 1.35s cubic-bezier(.75,0,1,.55) 1.15s forwards paused}
 @keyframes skyin{to{opacity:1;transform:scale(1.12)}}
 @keyframes dive{0%{opacity:1;transform:scale(1.12);filter:brightness(1) saturate(.85)}55%{opacity:1;filter:brightness(1.35) saturate(.7)}100%{opacity:0;transform:scale(9);filter:brightness(3.2) saturate(.4)}}
@@ -893,6 +893,274 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
 .bcheck-out.no{border-color:rgba(217,241,255,.3)}
 .bcheck-out a{color:var(--accent)}
 @media (max-width:720px){.bcheck{grid-template-columns:1fr}}
+
+/* v37 */
+/* --- intro: no orbit dive, straight onto the warehouse frame --- */
+.intro.gta .sky,.intro.gta .flash,.intro.gta .ground .z1,.intro.gta .ground .z2,.intro.gta .ground .z3{display:none !important}
+.intro.gta .ground{opacity:0;transform:none;filter:none;animation:groundin .9s ease .05s forwards paused}
+@keyframes groundin{to{opacity:1}}
+.intro.gta .vig{animation-delay:.25s}.intro.gta .scan{animation-delay:.15s}.intro.gta .scrim{animation-delay:.4s}.intro.gta .corner{animation-delay:.6s}
+.intro.gta .intro-mark .w1,.intro.gta .intro-mark .w2{animation-delay:.55s}.intro.gta .intro-mark .w2{animation-delay:.72s}
+.intro.gta .intro-mark .im::after{animation-delay:1.9s}
+.intro.gta .hud-line{animation-delay:.8s}.intro.gta .hud-line.big{animation-delay:1.4s}
+.intro.gta .intro-line{animation-delay:1.45s}
+@media (prefers-reduced-motion:reduce){.intro.gta .ground{opacity:1;animation:none}}
+
+/* --- full-screen blocks, snapping from block to block once the journey is done --- */
+html.snap{scroll-snap-type:y mandatory}
+html.snap.intro-lock,body.menu-open{scroll-snap-type:none}
+.hero{scroll-snap-align:end}
+main > section{scroll-snap-align:start;scroll-snap-stop:always;position:relative}
+footer{scroll-snap-align:end}
+main > section.block{min-height:100vh;min-height:100svh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;padding-top:calc(var(--hdr,64px) + 28px);padding-bottom:36px}
+main > .block,main > .offerte{content-visibility:auto;contain-intrinsic-size:auto 100vh;contain-intrinsic-size:auto 100svh}
+section.block.alt > .bhead{max-width:1240px;margin-left:auto;margin-right:auto;padding-left:clamp(20px,6vw,96px);padding-right:clamp(20px,6vw,96px)}
+.bhead{display:flex;align-items:center;gap:14px;width:100%;margin-bottom:clamp(18px,3.5vh,40px);opacity:.9}
+.bhead small{font:500 11px/1 var(--mono);letter-spacing:.24em;color:var(--accent)}
+.bhead b{font:800 12px/1 var(--display);letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.bhead i{flex:1;height:1px;background:linear-gradient(90deg,rgba(217,241,255,.35),rgba(255,255,255,.04))}
+.offerte{scroll-snap-align:start}
+.offerte .wrap{min-height:100vh;min-height:100svh;box-sizing:border-box;align-content:center;padding-top:calc(var(--hdr,64px) + 28px);padding-bottom:36px;grid-template-rows:auto auto}
+.offerte .wrap .bhead{grid-column:1/-1}
+/* rhythm: vh-based so a block fits its screen */
+h2.t{font-size:clamp(32px,4.4vw,64px);max-width:18ch}
+.lead{margin-top:clamp(12px,2vh,20px);font-size:clamp(16px,1.25vw,19px);max-width:58ch}
+.kicker{margin-bottom:clamp(10px,1.8vh,16px)}
+.grid3,.cols,.steps,.provcards,.tiles,.reasons,.mods,.calc,.faq{margin-top:clamp(18px,4vh,44px)}
+.grid3,.cols,.steps,.provcards{gap:clamp(12px,2vw,24px)}
+.stat{padding:clamp(16px,2.4vh,26px) clamp(16px,2vw,24px)}
+.stat .n{font-size:clamp(36px,4.2vw,64px)}
+.col{padding:clamp(18px,2.6vh,28px) clamp(18px,2vw,28px)}
+.col li{padding:9px 0}
+.steps li{padding:clamp(16px,2.4vh,24px) clamp(16px,2vw,22px)}
+.steps small{margin-bottom:10px}
+.hero-cta{margin-top:clamp(14px,2.6vh,26px)}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:0 44px;max-width:none;border-top:0}
+.faq details{border-top:1px solid rgba(255,255,255,.08);border-bottom:0}
+.faq summary{padding:clamp(11px,1.8vh,17px) 36px clamp(11px,1.8vh,17px) 0;font-size:clamp(15px,1.25vw,19px)}
+.faq p{padding-bottom:clamp(10px,1.6vh,18px);font-size:15px}
+.mods{gap:14px}.mod{padding:clamp(16px,2.4vh,22px) 40px clamp(14px,2vh,20px) clamp(16px,1.6vw,22px)}
+.mod b{font-size:clamp(18px,1.5vw,24px);margin-bottom:6px}.mod small{margin-bottom:10px}.mod span{font-size:13.5px}
+.tiles{gap:12px}.tiles a{padding:14px 16px 13px}
+.reasons{gap:12px}.reasons li{padding:16px 16px 14px}.reasons li::before{margin-bottom:10px}.reasons b{margin-bottom:5px}.reasons span{font-size:13.5px}
+.spec > div{padding:10px 16px}
+.hours th,.hours td{padding:10px 16px}
+.pc{padding:18px 20px}.pc-h{margin-bottom:10px}.pc-m{margin-top:12px}
+.calc{padding:20px 22px 18px}.calc-out{margin-top:16px}
+.contact{padding:20px 22px 22px}.contact-list{margin:4px 0 16px;gap:8px}.contact-list li{padding:6px 0}
+#fastgas-amsterdam .lead{max-width:66ch}
+#fastgas-amsterdam .lead + .lead{margin-top:14px}
+.cta-close{align-items:center;text-align:center}
+#bestellen .ticker{position:absolute;left:50%;bottom:0;width:100vw;transform:translateX(-50%);border-bottom:0;background:rgba(7,11,18,.55)}
+/* directory block: chips per province */
+.dir{margin-top:clamp(16px,3.5vh,36px);padding:6px 22px 8px}
+.dirp{border-top:1px solid rgba(255,255,255,.08);padding:10px 0 12px}
+.dirp:first-child{border-top:0}
+.dirp summary{list-style:none;cursor:default;display:flex;align-items:baseline;gap:14px;padding:6px 0 10px}
+.dirp summary::-webkit-details-marker{display:none}
+.dirp summary b{font:800 clamp(18px,1.5vw,22px)/1 var(--display);text-transform:uppercase;color:#fff}
+.dirp summary span{font:500 11px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--holo)}
+.dirp summary i{display:none;margin-left:auto;width:10px;height:10px;border-right:1px solid var(--accent);border-bottom:1px solid var(--accent);transform:rotate(45deg);transition:transform .3s}
+.dirp[open] summary i{transform:rotate(225deg)}
+.dirp .chips{gap:8px}
+.dirp .chips a{padding:7px 12px;font-size:13.5px}
+/* dots navigation */
+.dots{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:7;display:flex;flex-direction:column;gap:8px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+body.scrolled-page:not(.menu-open) .dots{opacity:1;pointer-events:auto}
+.dots button{position:relative;display:flex;align-items:center;justify-content:flex-end;width:22px;height:14px;padding:0;background:none;border:0;cursor:pointer;color:var(--text-2)}
+.dots button i{width:6px;height:6px;border-radius:50%;background:rgba(217,241,255,.35);transition:transform .3s var(--ease-out),background .3s}
+.dots button.on i{background:var(--accent);transform:scale(1.5);box-shadow:0 0 10px rgba(242,210,27,.6)}
+.dots button span{position:absolute;right:26px;top:50%;transform:translate(6px,-50%);white-space:nowrap;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(7,11,18,.85);border:1px solid rgba(255,255,255,.1);padding:7px 10px;border-radius:4px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s var(--ease-out)}
+.dots button:hover span,.dots button:focus-visible span{opacity:1;transform:translate(0,-50%)}
+@media (max-width:900px),(pointer:coarse){.dots{display:none}}
+/* reveal timing per block: items follow each other in order */
+.block .rv,.offerte .rv{transition-delay:calc(var(--i,0)*.09s)}
+.block.in .rv .lead{transition-delay:calc(var(--i,0)*.09s + .12s)}
+/* short laptops */
+@media (max-height:780px) and (min-width:721px){
+  h2.t{font-size:clamp(28px,3.6vw,46px)}
+  .lead{font-size:16px;margin-top:10px}
+  .kicker{margin-bottom:8px;font-size:12px}
+  .bhead{margin-bottom:14px}
+  .stat{padding:14px 18px}.stat .n{font-size:38px}.stat .d{font-size:14px}.stat .u{font-size:18px}
+  .col{padding:16px 20px}.col h3{font-size:22px}.col ul{margin-top:10px}.col li{padding:7px 0;font-size:15px}
+  .steps li{padding:14px 18px}.steps b{font-size:20px}.steps p{font-size:14px}
+  .pc{padding:14px 16px}.pc-h b{font-size:20px}.chips a{padding:5px 10px;font-size:13px}
+  .spec > div{padding:7px 14px}.spec dd{font-size:14px}
+  .hours th,.hours td{padding:7px 14px;font-size:14px}
+  .tiles a{padding:10px 12px}.tiles b{font-size:16px}.tiles span{font-size:12px}
+  .reasons li{padding:12px 14px 10px}.reasons li::before{margin-bottom:6px}.reasons b{font-size:16px}.reasons span{font-size:12.5px}
+  .mod{padding:12px 36px 12px 14px}.mod small{margin-bottom:6px}.mod b{font-size:18px}.mod span{font-size:12.5px}
+  .faq summary{padding:9px 32px 9px 0;font-size:15px}.faq p{font-size:14px;padding-bottom:10px}
+  .calc{padding:14px 16px 12px}.calc-in output{font-size:32px}.co{padding:10px 12px}.co b{font-size:26px}.co span{font-size:12px}.calc-note{font-size:11.5px;margin-top:8px}
+  .contact{padding:14px 16px}.contact-list li{padding:4px 0;font-size:14px}
+  .cc{padding:10px 14px}.cc b{font-size:15px}.cc em{font-size:12.5px}
+  .dirp{padding:6px 0 8px}.dirp summary{padding:4px 0 6px}.dirp .chips a{padding:5px 10px;font-size:12.5px}
+  .ticks{gap:6px}.ticks li{font-size:15px}
+  #fastgas-amsterdam .lead{font-size:15px}
+  .split{gap:36px}
+}
+/* phones */
+@media (max-width:720px){
+  main > section.block{padding-top:calc(var(--hdr,56px) + 14px);padding-bottom:22px;padding-left:18px;padding-right:18px}
+  section.block.alt > *{padding-left:18px;padding-right:18px}
+  .bhead{margin-bottom:12px;gap:10px}.bhead small{font-size:10px}.bhead b{font-size:11px}
+  h2.t{font-size:clamp(26px,7.4vw,34px);max-width:none}
+  .lead{margin-top:10px;font-size:15px;line-height:1.5;max-width:none}
+  .kicker{margin-bottom:8px;font-size:11px;letter-spacing:.22em}
+  .grid3,.cols,.steps,.provcards,.tiles,.reasons,.mods,.calc,.faq{margin-top:16px}
+  .grid3{grid-template-columns:1fr 1fr;gap:8px}
+  #idee .grid3{grid-template-columns:repeat(3,1fr)}
+  .stat{padding:12px 12px 11px;border-radius:10px}.stat .n{font-size:26px}.stat .n small{font-size:.5em}.stat .d{font-size:11.5px;margin-top:4px}.stat .u{font-size:15px}
+  .split{gap:14px}
+  .spec > div{grid-template-columns:88px 1fr;gap:8px;padding:7px 12px}.spec dt{font-size:9.5px;letter-spacing:.14em}.spec dd{font-size:13px}
+  .cols{gap:8px}.col{padding:12px 14px}.col h3{font-size:18px}.col ul{margin-top:6px}.col li{padding:6px 0;font-size:13.5px}
+  .calc{padding:12px 14px 10px}.calc-in span{font-size:10px}.calc-in output{font-size:28px}.calc-in input{height:24px}
+  .calc-out{grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.co{padding:8px 10px}.co b{font-size:22px}.co span{font-size:11px;margin-top:3px}.calc-note{font-size:10.5px;margin-top:8px}
+  .steps{gap:8px}.steps li{padding:12px 14px 11px}.steps small{margin-bottom:6px;font-size:10px}.steps b{font-size:17px;margin-bottom:4px}.steps p{font-size:13px;line-height:1.45}
+  .provcards{gap:8px}.pc{padding:12px 14px}.pc-h{margin-bottom:8px}.pc-h b{font-size:18px}.pc-h span{font-size:10px}.chips{gap:6px}.chips a{padding:5px 10px;font-size:12.5px}.pc-m{margin-top:8px;font-size:10px}
+  .bcheck{margin-top:12px}
+  #fastgas-amsterdam .lead{font-size:14px;line-height:1.5}
+  .tiles{grid-template-columns:1fr 1fr;gap:7px}.tiles a{padding:9px 11px 8px}.tiles b{font-size:14px}.tiles span{font-size:11px;margin-top:2px}
+  .hours th,.hours td{padding:7px 12px;font-size:13px}.hours th{width:42%}.hours tr.note td{font-size:12px}
+  .reasons{grid-template-columns:1fr 1fr;gap:7px}.reasons li{padding:10px 11px 9px}.reasons li::before{margin-bottom:5px;font-size:9.5px}.reasons b{font-size:13.5px;margin-bottom:3px}.reasons span{font-size:11.5px;line-height:1.4}
+  .ticks{gap:5px;margin-top:4px}.ticks li{font-size:13.5px;line-height:1.4}
+  .mods{grid-template-columns:1fr 1fr;gap:7px}.mod{padding:10px 26px 10px 11px}.mod small{margin-bottom:5px;font-size:9.5px}.mod b{font-size:14px;margin-bottom:3px}.mod span{font-size:11px;line-height:1.4}.mod .arr{right:8px;top:10px;width:16px;height:16px}.mod .arr::after{left:4px;top:4px}
+  .dir{margin-top:14px;padding:4px 14px 6px}.dirp{padding:4px 0 6px}.dirp summary{cursor:pointer;padding:8px 0}.dirp summary b{font-size:17px}.dirp summary span{font-size:10px}.dirp summary i{display:block}.dirp .chips{padding-bottom:6px}.dirp .chips a{padding:5px 10px;font-size:12.5px}
+  .faq{grid-template-columns:1fr;gap:0}.faq summary{padding:9px 28px 9px 0;font-size:14px;line-height:1.25}.faq p{font-size:13.5px;padding-bottom:10px;line-height:1.5}
+  .contact{padding:12px 14px 14px}.contact-list{margin:2px 0 12px;gap:4px}.contact-list li{padding:5px 0;font-size:13.5px}.contact-list b{font-size:10px}
+  .hero-cta{margin-top:12px;gap:8px 12px}.btn{min-height:42px;padding:0 16px;font-size:14.5px}.ghost{min-height:40px;font-size:14.5px}
+  .offerte .wrap{padding:calc(var(--hdr,56px) + 14px) 18px 22px;gap:14px}.offerte .wrap .bhead{margin-bottom:6px}
+  .cc{padding:10px 12px;column-gap:12px}.cc .ic{width:40px;height:40px}.cc b{font-size:15px}.cc .ph{font-size:12px}.cc em{font-size:12px;line-height:1.4}.need{font-size:10px}.offerte .note{font-size:12px}
+  #bestellen .ticker{padding:11px 0;font-size:10.5px}
+  .cta-close .lead{max-width:34ch}
+}
+/* very short phones: drop the second line of the tiles */
+@media (max-width:720px) and (max-height:700px){.tiles span{display:none}.tiles a{padding:8px 10px}.lead{font-size:14px}.reasons span{display:none}.mod span{display:none}}
+
+/* v37b */
+.dir .chips{display:flex;flex-wrap:wrap;grid-template-columns:none;column-gap:8px}
+.dir .chips li a{display:inline-block;grid-template-columns:none;padding:7px 12px;border-top:0;font-weight:400;color:#dfe6ef}
+.dir .chips li a:hover{padding-left:12px;color:#fff}
+.offerte .wrap{min-height:calc(100vh - 2px);min-height:calc(100svh - 2px)}
+@media (min-width:721px) and (max-width:1000px){
+  .tiles{grid-template-columns:repeat(3,1fr)}
+  .grid3{grid-template-columns:1fr 1fr}
+  .reasons{grid-template-columns:1fr 1fr}
+  .mods{grid-template-columns:1fr 1fr}
+  .faq{grid-template-columns:1fr}
+  .dirp .chips a{padding:6px 11px;font-size:13px}
+  .stat{padding:16px 18px}.tiles a{padding:11px 13px}.tiles b{font-size:16px}.tiles span{font-size:12px}
+}
+@media (max-width:720px){
+  .tiles span{display:none}.tiles a{padding:9px 11px}
+  .tiles{gap:6px}
+  .dir .chips li a{padding:5px 10px}
+}
+@media (max-width:720px) and (max-height:760px){
+  .bhead{margin-bottom:8px}.kicker{margin-bottom:6px}
+  h2.t{font-size:clamp(24px,6.8vw,30px)}
+  .lead,#fastgas-amsterdam .lead{font-size:13.5px;line-height:1.45}
+  .faq summary{padding:7px 26px 7px 0;font-size:13.5px}.faq p{font-size:13px;padding-bottom:8px}
+  .contact{padding:10px 12px 12px}.contact-list{margin:0 0 10px;gap:2px}.contact-list li{padding:3px 0;font-size:13px}
+  .btn{min-height:38px;font-size:14px}.ghost{min-height:36px;font-size:14px}
+  .cc{padding:8px 10px}.cc em{font-size:11.5px}.offerte .note{font-size:11.5px}.need{display:none}
+  .col li{padding:5px 0;font-size:13px}.col h3{font-size:17px}.col{padding:10px 12px}
+  .steps li{padding:10px 12px 9px}.steps p{font-size:12.5px}
+  .pc{padding:10px 12px}.chips a{padding:4px 9px;font-size:12px}
+  .spec > div{padding:6px 10px}.spec dd{font-size:12.5px}
+  .hours th,.hours td{padding:6px 10px;font-size:12.5px}
+  .stat{padding:10px}.stat .n{font-size:24px}.stat .d{font-size:11px}
+  .calc-note{display:none}
+}
+
+/* v37c */
+section.block.alt > *{width:100%;box-sizing:border-box}
+.reasons span{display:block}
+#plaatsen h2.t{max-width:none}
+@media (min-width:1000px){.dir{display:grid;grid-template-columns:1fr 1fr;column-gap:36px}.dirp.nh{grid-column:1/-1}.dirp.fl,.dirp.ut{border-top:1px solid rgba(255,255,255,.08)}}
+@media (max-width:720px) and (max-height:760px){.split{gap:10px}.contact .btn{min-height:36px}.contact{padding:8px 12px 10px}}
+/* pictogram in the block head */
+.bhead .pict{width:26px;height:26px;flex:none;color:rgba(217,241,255,.72);fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-left:6px}
+@media (max-width:720px){.bhead .pict{width:20px;height:20px}}
+/* stills */
+@media (min-width:1000px){
+  .rv.hd{display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,34%,460px);column-gap:clamp(32px,4vw,64px);align-items:center;grid-template-areas:"k s" "h s" "l s"}
+  .rv.hd > .kicker{grid-area:k}.rv.hd > h2{grid-area:h}.rv.hd > .lead{grid-area:l}.rv.hd > .still{grid-area:s}
+}
+.still{position:relative;margin:0;aspect-ratio:16/9;border:1px solid rgba(217,241,255,.16);border-radius:6px;overflow:hidden;background:#0a0f18;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.still img{display:block;width:100%;height:100%;object-fit:cover;opacity:.8;filter:saturate(.85);transform:scale(1.05);transition:transform 1.4s var(--ease-out)}
+.block.in .still img{transform:none}
+.still::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,11,18,.02),rgba(7,11,18,.6)),repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 4px);pointer-events:none}
+.still .c{position:absolute;width:14px;height:14px;border:1px solid rgba(217,241,255,.6);z-index:2}
+.still .c.tl{left:8px;top:8px;border-right:0;border-bottom:0}.still .c.tr{right:8px;top:8px;border-left:0;border-bottom:0}.still .c.bl{left:8px;bottom:8px;border-right:0;border-top:0}.still .c.br{right:8px;bottom:8px;border-left:0;border-top:0}
+.still figcaption{position:absolute;left:14px;bottom:11px;z-index:2;font:500 10px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:rgba(217,241,255,.8)}
+@media (max-width:999px){.still{display:none}}
+#bestellen .bgstill{position:absolute;left:50%;top:0;width:100vw;height:100%;transform:translateX(-50%);object-fit:cover;opacity:.14;pointer-events:none;z-index:0;-webkit-mask-image:linear-gradient(180deg,transparent,#000 28%,#000 72%,transparent);mask-image:linear-gradient(180deg,transparent,#000 28%,#000 72%,transparent)}
+#bestellen > .rv{position:relative;z-index:1}
+/* contact line at the foot of a block */
+.cta-mini{position:absolute;left:clamp(20px,6vw,96px);right:max(96px,clamp(20px,6vw,96px));bottom:14px;display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);z-index:2}
+section.block.alt .cta-mini{left:max(clamp(20px,6vw,96px),calc((100% - 1240px)/2 + clamp(20px,6vw,96px)))}
+.cta-mini span::before{content:"//";color:var(--accent);margin-right:8px}
+.cta-mini a{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid rgba(217,241,255,.28);border-radius:999px;color:#fff;text-decoration:none;letter-spacing:.12em;transition:border-color .25s,background .25s,transform .25s var(--ease-out)}
+.cta-mini a svg{width:13px;height:13px}
+.cta-mini a[data-ph="whatsapp"]{color:#8af0b0;border-color:rgba(37,211,102,.45)}
+.cta-mini a:hover{border-color:var(--accent);background:rgba(242,210,27,.08);transform:translateY(-1px)}
+main > section.block.has-cta{padding-bottom:calc(36px + 36px)}
+@media (max-width:720px){.cta-mini{left:18px;right:78px;bottom:10px;gap:6px 8px;font-size:10px}.cta-mini a{padding:6px 10px}.cta-mini a svg{width:12px;height:12px}main > section.block.has-cta{padding-bottom:calc(22px + 34px)}}
+/* first caption: buttons */
+.band-cta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.band-cta a{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 13px;border-radius:999px;font:600 11.5px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:#0a0f18;background:var(--accent);transition:transform .25s var(--ease-out),filter .25s}
+.band-cta a[data-ph="whatsapp"]{background:#25d366}
+.band-cta a svg{width:15px;height:15px}
+.band-cta a:hover{transform:translateY(-1px);filter:brightness(1.06)}
+@media ((max-width:720px) and (orientation:portrait)),((orientation:portrait) and (pointer:coarse)){.band-cta{margin-top:10px;gap:6px}.band-cta a{min-height:30px;padding:0 11px;font-size:10.5px}}
+/* floating contact button as a HUD element while the journey is on screen */
+.fab-btn .lb{display:none}
+body:not(.sub):not(.scrolled-page) .fab{right:calc(clamp(16px,2.8vw,34px) + 28px);bottom:calc(var(--bar-gap,0px) + max(16px,env(safe-area-inset-bottom) + 4px))}
+body:not(.sub):not(.scrolled-page) .fab:not(.open) .fab-btn{width:auto;height:26px;border-radius:4px;padding:0 10px 0 8px;gap:7px;display:inline-flex;align-items:center;opacity:1;background:rgba(7,11,18,.45);border-color:rgba(217,241,255,.42);color:rgba(217,241,255,.85);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transform:none}
+body:not(.sub):not(.scrolled-page) .fab:not(.open) .fab-btn .i1,body:not(.sub):not(.scrolled-page) .fab:not(.open) .fab-btn .i2,body:not(.sub):not(.scrolled-page) .fab:not(.open) .fab-btn .pulse{display:none}
+body:not(.sub):not(.scrolled-page) .fab:not(.open) .fab-btn .lb{display:inline;font:500 10.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+body:not(.sub):not(.scrolled-page) .fab:not(.open) .fab-btn .lb::before{content:"//";color:var(--accent);margin-right:7px}
+body:not(.sub):not(.scrolled-page) .fab:not(.open):hover .fab-btn{border-color:var(--accent);color:#fff}
+body:not(.sub):not(.scrolled-page) .fab-item{transition-delay:0s}
+
+/* v37d */
+.citystrip{display:none}
+@media ((max-width:720px) and (orientation:portrait)),((orientation:portrait) and (pointer:coarse)){
+  /* pins are dots; names live in the strip */
+  #holoMap .hs .lbl,#holoMap .hs.active .lbl,#holoMap .hs.hot .lbl{display:none !important}
+  #holoMap .hs.show .dot{transform:scale(1.15)}
+  .citystrip{display:block;position:absolute;left:14px;right:14px;bottom:calc(var(--bar-gap) + max(96px,env(safe-area-inset-bottom) + 84px));z-index:6;padding:10px 12px 11px;border:1px solid rgba(217,241,255,.2);border-radius:6px;background:rgba(7,11,18,.78);opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .35s ease,transform .45s var(--ease-out)}
+  .citystrip.on{opacity:1;transform:none;pointer-events:auto}
+  .cs-h{font:500 10px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(217,241,255,.75);margin-bottom:8px}
+  .cs-l{display:flex;flex-wrap:wrap;gap:6px}
+  .cs{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid rgba(217,241,255,.35);border-radius:4px;background:rgba(10,22,36,.7);color:#fff;text-decoration:none;font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:0;animation:csin .35s ease calc(var(--d,0)*1s) forwards}
+  .cs::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--led);box-shadow:0 0 6px rgba(58,166,255,.9)}
+  .cs::after{content:"▸";color:var(--accent);font-size:9px}
+  .mapcue{bottom:calc(var(--bar-gap) + max(40px,env(safe-area-inset-bottom) + 28px))}
+  .mapcue span{white-space:nowrap;font-size:10px;letter-spacing:.16em}
+  /* the first caption carries the buttons on phones; the floating button appears after the journey */
+  body:not(.sub):not(.scrolled-page) .fab{opacity:0;pointer-events:none}
+}
+@keyframes csin{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.cs{animation:none;opacity:1}}
+/* bezorgplaatsen fits a laptop and a desktop screen */
+#plaatsen h2.t{font-size:clamp(30px,3.4vw,50px)}
+@media (min-width:1000px){.dirp .chips a{padding:6px 11px;font-size:13px}.dirp{padding:8px 0 10px}.dirp summary{padding:4px 0 8px}}
+@media (max-height:780px) and (min-width:721px){
+  .rv.hd{grid-template-columns:minmax(0,1fr) clamp(240px,26%,340px)}
+  .dirp .chips a{padding:4px 9px;font-size:12px}.dirp{padding:5px 0 7px}.dirp summary{padding:2px 0 6px}.dir{padding:4px 18px 6px}
+  #plaatsen h2.t{font-size:clamp(26px,3vw,40px)}
+}
+@media (max-width:720px) and (max-height:700px){.reasons span{display:none}}
+/* v37e */
+section.block.alt > .cta-mini{padding-left:0;padding-right:0;width:auto;max-width:none;left:max(clamp(20px,6vw,96px),calc((100% - 1240px)/2 + clamp(20px,6vw,96px)))}
+@media (max-width:720px){section.block.alt > .cta-mini{left:18px}}
+/* v37f */
+/* the closing block paints edge to edge (content-visibility would clip its full-width still and ticker to the column) */
+main > #bestellen{content-visibility:visible;contain:none}
+@media (max-width:720px){#bestellen .ticker{display:none}}
 </style>
 </head>
 <body>
@@ -963,12 +1231,13 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
         <div class="tele"><span id="teleScene">SCN 01/06</span><span id="teleName">Aanrijden</span><span id="teleTime">T+00.0S</span><span id="telePct">000%</span><span class="live"><i></i>LIVE</span></div>
       </div>
 
-      <div class="band left" data-a="0.03" data-b="0.125">
+      <div class="band left" data-a="0.03" data-b="0.125" data-cta>
         <div class="scrim"></div>
         <div class="kicker l1">Lachgas Amsterdam · 24/7</div>
         <h1 class="l2">Lachgas Amsterdam.<br>Binnen 20 minuten op locatie.</h1>
         <p class="l3">De lachgaskoerier voor keukens, bars, events en feesten in Amsterdam en omstreken: Fastgas cilinders van 2000 gram, dag en nacht, uit eigen magazijn. Voor elke gelegenheid.</p>
         <ul class="facts l3"><li>binnen 20 min</li><li>24/7</li><li>2000 g · 250 vullingen</li></ul>
+        <div class="band-cta l3"><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>Bestel via WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
       </div>
       <div class="band right" data-a="0.13" data-b="0.215">
         <div class="scrim"></div>
@@ -1046,6 +1315,7 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
           <div class="mc-p">De steden waar we 24/7 binnen 20 minuten leveren verschijnen holografisch op de kaart. Tik op een stad voor de bezorgpagina.</div>
         </div>
         <div class="mapcue" id="mapCue" aria-hidden="true"><span>Scrol verder voor het aanbod</span><i></i></div>
+        <div class="citystrip" id="cityStrip"></div>
       </div>
       <div class="progress" id="progressBar" aria-hidden="true"></div>
       <svg class="ring" id="ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/></svg>
@@ -1053,22 +1323,20 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
     </div>
   </section>
 
-  <div class="ticker" aria-hidden="true"><div class="tk"><span>Binnen 20 minuten op locatie</span><span>24 uur per dag, 7 dagen per week</span><span>Noord-Holland · Flevoland · Utrecht</span><span>Eén cilinder, zo'n 250 vullingen</span><span>Getest op 165 bar</span><span>Bezorgd voordat de gasten het merken</span><span>Snel geregeld. Goed geregeld.</span><span>Voor elke gelegenheid</span><span>Eigen magazijn, eigen koeriers</span></div></div>
-
-  <div class="stripe" aria-hidden="true"></div>
-
-  <div class="grouphead rv" id="g-product"><small>01</small><b>Product</b><i></i><span>De Fastgas cilinder van 2000 gram</span></div>
-  <section class="block" id="idee">
-    <div class="rv"><div class="kicker">Onder druk</div><h2 class="t">Lachgas Amsterdam voor elke gelegenheid die doorgaat.</h2>
-    <p class="lead">Fastgas Service NL is de lachgasleverancier van Amsterdam en omstreken voor horeca, events en elke andere gelegenheid. Een patroon van 8 gram is na één vulling leeg; een Fastgas cilinder van 2000 gram vult zo'n 250 keer. Wisselen doe je na de service, niet tijdens. En raakt hij toch leeg, dan staat onze koerier binnen 20 minuten voor de deur, dag en nacht.</p></div>
+  <section class="block has-cta" id="idee">
+    <div class="bhead" aria-hidden="true"><small>01</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="17" y="12" width="14" height="30" rx="4"/><path d="M21 12V8h6v4M19 20h10"/></svg></div>
+    <div class="rv hd"><div class="kicker">Onder druk</div><h2 class="t">Lachgas Amsterdam voor elke gelegenheid die doorgaat.</h2>
+    <p class="lead">Fastgas Service NL is de lachgasleverancier van Amsterdam en omstreken voor horeca, events en elke andere gelegenheid. Een patroon van 8 gram is na één vulling leeg; een Fastgas cilinder van 2000 gram vult zo'n 250 keer. Wisselen doe je na de service, niet tijdens. En raakt hij toch leeg, dan staat onze koerier binnen 20 minuten voor de deur, dag en nacht.</p><figure class="still" aria-hidden="true"><img src="assets/still-cilinder-720.webp" srcset="assets/still-cilinder-720.webp 720w, assets/still-cilinder-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Fastgas · 2000 gram</figcaption></figure></div>
     <div class="grid3">
       <div class="stat rv"><div class="n"><span data-count="2000">0</span><small>g</small></div><div class="d">Inhoud per cilinder</div></div>
       <div class="stat rv"><div class="n">±<span data-count="250">0</span></div><div class="d">Vullingen per cilinder</div></div>
       <div class="stat rv"><div class="n"><span data-count="165">0</span><small>bar</small></div><div class="d">Elke cilinder getest</div></div>
     </div>
+    <div class="cta-mini"><span>Vandaag nog nodig?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="product">
+  <section class="block has-cta" id="product">
+    <div class="bhead" aria-hidden="true"><small>02</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="17" y="20" width="14" height="22" rx="4"/><path d="M21 20v-3h6v3M24 17v-4"/><circle cx="24" cy="9" r="3.5"/><path d="M36 26h4M36 32h4M8 26h4M8 32h4"/></svg></div>
     <div class="split">
       <div class="rv"><div class="kicker">Het product</div><h2 class="t">Eén cilinder. De hele avond.</h2>
       <p class="lead">De zwart-gele stalen cilinder voor slagroomspuiten. Eén cilinder vervangt een doos patronen en houdt de druk gelijk van de eerste tot de laatste vulling.</p>
@@ -1084,18 +1352,22 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
         <div><dt>Gebruik</dt><dd>elke gelegenheid, 18+</dd></div>
       </dl>
     </div>
+    <div class="cta-mini"><span>Prijs per cilinder?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="verschil">
+  <section class="block has-cta" id="verschil">
+    <div class="bhead" aria-hidden="true"><small>03</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10v30M14 40h20M8 24h32"/><path d="M8 24l6-10 6 10zM28 24l6-10 6 10z"/></svg></div>
     <div class="rv"><div class="kicker">Rekensom</div><h2 class="t">Tot 60 procent minder gaskosten.</h2>
     <p class="lead">Minder wisselen, minder afval, een lagere prijs per gram. Dat is het verschil tussen patronen en één stalen cilinder.</p></div>
     <div class="cols">
       <div class="col rv"><h3>Patronen van 8 gram</h3><ul><li>250 keer wisselen per 2000 gram</li><li>Dozen vol lege patronen</li><li>Hogere prijs per gram</li><li>Wisselen midden in de service</li></ul></div>
       <div class="col fg rv"><h3>Fastgas 2000 gram</h3><ul><li>Eén keer koppelen</li><li>Eén stalen cilinder, volledig recyclebaar</li><li>Lagere prijs per gram</li><li>Wisselen na de service, nooit tijdens</li></ul></div>
     </div>
+    <div class="cta-mini"><span>Weten wat het jou scheelt?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt" id="rekenhulp">
+  <section class="block alt has-cta" id="rekenhulp">
+    <div class="bhead" aria-hidden="true"><small>04</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="13" y="8" width="22" height="32" rx="3"/><path d="M18 14h12M18 22h4M24 22h4M18 28h4M24 28h4M30 22v6M18 34h10"/></svg></div>
     <div class="rv"><div class="kicker">Rekenhulp</div><h2 class="t">Hoeveel scheelt het jou?</h2>
     <p class="lead">Schuif naar het aantal vullingen dat je per dag maakt. De rekenhulp laat zien wat dat per maand betekent in patronen, cilinders en wisselmomenten.</p></div>
     <div class="calc rv">
@@ -1108,30 +1380,35 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
       </div>
       <p class="calc-note">Rekening: 30 dagen, 1 vulling = 1 patroon van 8 gram, 1 cilinder = zo'n 250 vullingen, een lege patroon weegt ongeveer 8 gram staal.</p>
     </div>
+    <div class="cta-mini"><span>Jouw aantal doorgeven?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <div class="grouphead rv" id="g-bezorging"><small>02</small><b>Bezorging</b><i></i><span>24/7 · binnen 20 minuten · drie provincies</span></div>
-  <section class="block" id="werkwijze">
-    <div class="rv"><div class="kicker">Zo werkt het</div><h2 class="t">Bestellen. Koerier. Koppelen. Klaar.</h2>
-    <p class="lead">Geen account, geen wachtrij. Drie stappen tussen een lege spuit en een avond die doordraait.</p></div>
+  <section class="block has-cta" id="werkwijze">
+    <div class="bhead" aria-hidden="true"><small>05</small><b>Bezorging</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="10" cy="36" r="3"/><circle cx="38" cy="12" r="3"/><path d="M13 34c8-2 8-14 16-16 4-1 6-2 7-4" stroke-dasharray="3 3"/></svg></div>
+    <div class="rv hd"><div class="kicker">Zo werkt het</div><h2 class="t">Bestellen. Koerier. Koppelen. Klaar.</h2>
+    <p class="lead">Geen account, geen wachtrij. Drie stappen tussen een lege spuit en een avond die doordraait.</p><figure class="still" aria-hidden="true"><img src="assets/still-magazijn-720.webp" srcset="assets/still-magazijn-720.webp 720w, assets/still-magazijn-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Eigen magazijn · regio Amsterdam</figcaption></figure></div>
     <ol class="steps">
       <li class="rv"><small>01</small><b>Bestel</b><p>Per WhatsApp of telefonisch: <span class="ph">[telefoonnummer]</span>. Dag en nacht, ook in het weekend.</p></li>
       <li class="rv"><small>02</small><b>Koerier vertrekt direct</b><p>Uit eigen magazijn, met eigen koeriers. Geen tussenhandel, geen depot ergens anders.</p></li>
       <li class="rv"><small>03</small><b>Binnen 20 minuten op locatie</b><p>Drukregelaar op je standaard slagroomspuit, koppelen en doorwerken. Lege cilinder geven we mee retour.</p></li>
     </ol>
+    <div class="cta-mini"><span>Nu bestellen?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt" id="bezorging-info">
-    <div class="rv"><div class="kicker">Bezorging</div><h2 class="t">Drie provincies. Eén belofte.</h2>
-    <p class="lead">24 uur per dag, 7 dagen per week, binnen 20 minuten op locatie. Buiten deze plaatsen? Vraag het aan, dan kijken we wat kan.</p></div>
+  <section class="block alt has-cta" id="bezorging-info">
+    <div class="bhead" aria-hidden="true"><small>06</small><b>Bezorging</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 42s-12-11-12-20a12 12 0 0 1 24 0c0 9-12 20-12 20z"/><circle cx="24" cy="22" r="4"/></svg></div>
+    <div class="rv hd"><div class="kicker">Bezorging</div><h2 class="t">Drie provincies. Eén belofte.</h2>
+    <p class="lead">24 uur per dag, 7 dagen per week, binnen 20 minuten op locatie. Buiten deze plaatsen? Vraag het aan, dan kijken we wat kan.</p><figure class="still" aria-hidden="true"><img src="assets/still-nederland-720.webp" srcset="assets/still-nederland-720.webp 720w, assets/still-nederland-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Noord-Holland · Flevoland · Utrecht</figcaption></figure></div>
     <div class="provcards">
       <div class="pc rv"><div class="pc-h"><b>Noord-Holland</b><span>7 plaatsen</span></div><ul class="chips"><li><a href="lachgas-bezorgen-amsterdam/">Amsterdam</a></li><li><a href="lachgas-bezorgen-haarlem/">Haarlem</a></li><li><a href="lachgas-bezorgen-zaandam/">Zaandam</a></li><li><a href="lachgas-bezorgen-alkmaar/">Alkmaar</a></li><li><a href="lachgas-bezorgen-hoorn/">Hoorn</a></li><li><a href="lachgas-bezorgen-den-helder/">Den Helder</a></li><li><a href="lachgas-bezorgen-hilversum/">Hilversum</a></li></ul><div class="pc-m">24/7 · binnen 20 minuten</div></div>
       <div class="pc rv"><div class="pc-h"><b>Flevoland</b><span>2 plaatsen</span></div><ul class="chips"><li><a href="lachgas-bezorgen-almere/">Almere</a></li><li><a href="lachgas-bezorgen-lelystad/">Lelystad</a></li></ul><div class="pc-m">24/7 · binnen 20 minuten</div></div>
       <div class="pc rv"><div class="pc-h"><b>Utrecht</b><span>2 plaatsen</span></div><ul class="chips"><li><a href="lachgas-bezorgen-utrecht/">Utrecht</a></li><li><a href="lachgas-bezorgen-amersfoort/">Amersfoort</a></li></ul><div class="pc-m">24/7 · binnen 20 minuten</div></div>
     </div>
+    <div class="cta-mini"><span>Buiten deze plaatsen?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="bezorgcheck">
+  <section class="block has-cta" id="bezorgcheck">
+    <div class="bhead" aria-hidden="true"><small>07</small><b>Bezorging</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="12"/><circle cx="24" cy="24" r="4"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6"/></svg></div>
     <div class="rv"><div class="kicker">Bezorgcheck</div><h2 class="t">Bezorgen we bij jou? Check het in één seconde.</h2>
     <p class="lead">Typ je plaats, wijk of de eerste vier cijfers van je postcode. Je ziet direct of we binnen 20 minuten bij je zijn, met een link naar de pagina van jouw plaats.</p>
     <div class="bcheck" id="bcheck">
@@ -1139,15 +1416,19 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
   <button class="btn" type="button" id="bcheckBtn">Check bezorging</button>
   <div class="bcheck-out" id="bcheckOut" role="status" aria-live="polite">Typ je plaats of de eerste vier cijfers van je postcode.</div>
 </div></div>
+    <div class="cta-mini"><span>Liever direct vragen?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="fastgas-amsterdam">
+  <section class="block has-cta" id="fastgas-amsterdam">
+    <div class="bhead" aria-hidden="true"><small>08</small><b>Amsterdam</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 40V22l6-6 6 6v18M20 40V18l6-6 6 6v22M32 40V24l4-4 4 4v16M4 40h40"/></svg></div>
     <div class="rv"><div class="kicker">Fastgas Amsterdam</div><h2 class="t">Fastgas Amsterdam: het merk, de cilinder, de bezorging.</h2>
     <p class="lead">Zoek je "Fastgas Amsterdam" of "lachgas Amsterdam"? Dat is bij ons hetzelfde adres. Fastgas is het merk van de zwart-gele cilinder van 2000 gram; wij zijn de bezorgservice eromheen. Originele, verzegelde Fastgas cilinders, getest op 165 bar, met 99,9 procent zuivere N2O, binnen 20 minuten bezorgd in elk stadsdeel van Amsterdam en in meer dan veertig plaatsen in Noord-Holland, Flevoland en Utrecht.</p>
     <p class="lead">Geen hervulde of naamloze cilinders, geen tussenhandel: eigen magazijn, eigen koeriers, dag en nacht. Lees meer over <a href="fastgas-tank-2kg/">de Fastgas cilinder van 2000 gram</a>, bekijk <a href="lachgas-bezorgen-amsterdam/">lachgas bezorgen in Amsterdam</a> of <a href="bezorggebieden/">alle bezorgplaatsen</a>.</p></div>
+    <div class="cta-mini"><span>Bestellen in Amsterdam?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="amsterdam">
+  <section class="block has-cta" id="amsterdam">
+    <div class="bhead" aria-hidden="true"><small>09</small><b>Amsterdam</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M24 8v32M8 24h32M13 13l22 22M35 13L13 35"/></svg></div>
     <div class="rv"><div class="kicker">Lachgas bezorgen Amsterdam</div><h2 class="t">Elk stadsdeel, dezelfde 20 minuten.</h2>
     <p class="lead">Onze koeriers vertrekken direct vanuit het eigen magazijn. Van Centrum tot Noord en van West tot Zuidoost: lachgas Amsterdam bezorgd aan de deur, ook midden in de nacht. Buiten de stad rijden we door naar de regio.</p></div>
     <ul class="tiles">
@@ -1167,9 +1448,11 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
       <li><a href="lachgas-bezorgen-almere/"><b>Almere</b><span>Flevoland</span></a></li>
       <li><a href="lachgas-bezorgen-utrecht/"><b>Utrecht</b><span>Domstad en Amersfoort</span></a></li>
     </ul>
+    <div class="cta-mini"><span>Koerier nodig in jouw stadsdeel?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
   <section class="block alt" id="openingstijden">
+    <div class="bhead" aria-hidden="true"><small>10</small><b>Amsterdam</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="15"/><path d="M24 14v10l6 4"/></svg></div>
     <div class="split">
       <div class="rv"><div class="kicker">Openingstijden</div><h2 class="t">Elke dag. Elk uur.</h2>
       <p class="lead">Het woord gesloten bestaat bij ons niet. Een bar die om 02:00 uur zonder zit of een patisserie die om 06:00 uur begint: we zijn bereikbaar en we rijden. Ook op feestdagen.</p>
@@ -1189,7 +1472,8 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
     </div>
   </section>
 
-  <section class="block" id="waarom">
+  <section class="block has-cta" id="waarom">
+    <div class="bhead" aria-hidden="true"><small>11</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l5.5 11 12 1.8-8.7 8.5 2 12L24 33.6 13.2 39.3l2-12L6.5 18.8l12-1.8z"/></svg></div>
     <div class="rv"><div class="kicker">Waarom Fastgas Service NL</div><h2 class="t">Acht redenen om voor ons te kiezen.</h2></div>
     <ol class="reasons">
       <li class="rv"><b>Binnen 20 minuten</b><span>Eigen koeriers, direct vanuit het magazijn in de regio Amsterdam.</span></li>
@@ -1201,9 +1485,11 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
       <li class="rv"><b>Elke gelegenheid</b><span>Horeca, events, catering en elke andere gelegenheid, 18+. Zo houden we het legaal en betrouwbaar.</span></li>
       <li class="rv"><b>Retour en recycling</b><span>Lege stalen cilinders nemen we mee terug.</span></li>
     </ol>
+    <div class="cta-mini"><span>Overtuigd?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
   <section class="block alt" id="veilig">
+    <div class="bhead" aria-hidden="true"><small>12</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l14 5v12c0 9-6 15-14 19-8-4-14-10-14-19V11z"/><path d="M17 24l5 5 9-10"/></svg></div>
     <div class="split">
       <div class="rv"><div class="kicker">Veilig bewaren</div><h2 class="t">Zo bewaar je een cilinder.</h2>
       <p class="lead">Een Fastgas cilinder is een drukhouder. Met een paar vaste regels blijft hij veilig, van levering tot retour.</p>
@@ -1220,8 +1506,8 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
     </div>
   </section>
 
-  <div class="grouphead rv" id="g-zakelijk"><small>03</small><b>Zakelijk</b><i></i><span>Voor wie, kwaliteit, informatie, vragen, offerte</span></div>
-  <section class="block alt" id="voorwie">
+  <section class="block alt has-cta" id="voorwie">
+    <div class="bhead" aria-hidden="true"><small>13</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 24a7 7 0 0 1 2-13 8 8 0 0 1 16 0 7 7 0 0 1 2 13v14H14z"/><path d="M14 32h20"/></svg></div>
     <div class="rv"><div class="kicker">Voor wie</div><h2 class="t">Gelegenheden die doorgaan.</h2>
     <p class="lead">Overal waar slagroom, espuma en mousse de hele service doorgaan. Zakelijk, op factuur, met een vast ritme als je dat wilt.</p></div>
     <div class="grid3 who">
@@ -1232,11 +1518,13 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
       <a class="stat rv" href="lachgas-horeca/"><div class="u">Catering en events</div><div class="d">Grote volumes op locatie, geleverd waar je staat.</div></a>
       <a class="stat rv" href="lachgas-horeca/"><div class="u">Foodtrucks en koffiebars</div><div class="d">Klein in opslag, groot in vullingen.</div></a>
     </div>
+    <div class="cta-mini"><span>Vast ritme afspreken?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="kwaliteit">
-    <div class="rv"><div class="kicker">Kwaliteit en veiligheid</div><h2 class="t">Elke cilinder getest. Elke levering op tijd.</h2>
-    <p class="lead">We leveren alleen cilinders die door de test zijn gekomen. Dat is geen marketing, dat is de voorwaarde om dit werk te mogen doen.</p></div>
+  <section class="block has-cta" id="kwaliteit">
+    <div class="bhead" aria-hidden="true"><small>14</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 32a16 16 0 0 1 32 0"/><path d="M24 32l8-10"/><circle cx="24" cy="32" r="2"/><path d="M8 32h4M36 32h4"/></svg></div>
+    <div class="rv hd"><div class="kicker">Kwaliteit en veiligheid</div><h2 class="t">Elke cilinder getest. Elke levering op tijd.</h2>
+    <p class="lead">We leveren alleen cilinders die door de test zijn gekomen. Dat is geen marketing, dat is de voorwaarde om dit werk te mogen doen.</p><figure class="still" aria-hidden="true"><img src="assets/still-onderdelen-720.webp" srcset="assets/still-onderdelen-720.webp 720w, assets/still-onderdelen-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Ventiel · drukregelaar · stalen mantel</figcaption></figure></div>
     <div class="grid3 q4">
       <div class="stat rv"><div class="u">165 bar</div><div class="d">Elke cilinder getest voordat hij het magazijn verlaat.</div></div>
       <div class="stat rv"><div class="u">Lekvrij ventiel</div><div class="d">Dubbele afdichting op de koppeling, geen drukverlies in opslag.</div></div>
@@ -1244,9 +1532,11 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
       <div class="stat rv"><div class="u">Retour en recycling</div><div class="d">Lege stalen cilinders nemen we mee terug of gaan naar het oud ijzer.</div></div>
     </div>
     <div class="hero-cta rv"><a class="ghost" href="veilig-gebruik-lachgas/">Veilig gebruik</a><a class="ghost" href="lachgas-wetgeving/">Wat zegt de wet sinds 2023?</a></div>
+    <div class="cta-mini"><span>Vragen over de cilinder?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="diensten">
+  <section class="block has-cta" id="diensten">
+    <div class="bhead" aria-hidden="true"><small>15</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><rect x="27" y="8" width="13" height="13" rx="2"/><rect x="8" y="27" width="13" height="13" rx="2"/><rect x="27" y="27" width="13" height="13" rx="2"/></svg></div>
     <div class="rv"><div class="kicker">Index</div><h2 class="t">Alles over Fastgas, per onderwerp.</h2>
     <p class="lead">Van bestellen tot wetgeving: elke vraag heeft een eigen pagina. Kort, concreet en geschreven voor professionals.</p></div>
     <div class="mods">
@@ -1259,70 +1549,23 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
       <a class="mod rv" href="#bezorgplaatsen"><small>07</small><b>Bezorging</b><span>Noord-Holland, Flevoland en Utrecht: 24/7, binnen 20 minuten op locatie.</span><i class="arr" aria-hidden="true"></i></a>
       <a class="mod rv" href="veilig-gebruik-lachgas/"><small>08</small><b>Veilig gebruik</b><span>Opslag, ventilatie en koppelen op locatie.</span><i class="arr" aria-hidden="true"></i></a>
     </div>
-    <div class="dir rv" id="bezorgplaatsen">
-      <div class="dir-h"><span class="kicker">Bezorgplaatsen</span><span class="dir-note">24/7 · binnen 20 minuten op locatie</span></div>
-      <ul>
-        <li><a href="lachgas-bezorgen-amsterdam/"><em>[NH]</em><span>Amsterdam</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amsterdam-centrum/"><em>[NH]</em><span>Amsterdam Centrum</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amsterdam-noord/"><em>[NH]</em><span>Amsterdam Noord</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amsterdam-nieuw-west/"><em>[NH]</em><span>Amsterdam Nieuw-West</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amsterdam-oost/"><em>[NH]</em><span>Amsterdam Oost</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amsterdam-west/"><em>[NH]</em><span>Amsterdam West</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amsterdam-zuid/"><em>[NH]</em><span>Amsterdam Zuid</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amsterdam-zuidoost/"><em>[NH]</em><span>Amsterdam Zuidoost</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-weesp/"><em>[NH]</em><span>Weesp</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amstelveen/"><em>[NH]</em><span>Amstelveen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-diemen/"><em>[NH]</em><span>Diemen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-haarlem/"><em>[NH]</em><span>Haarlem</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-zaandam/"><em>[NH]</em><span>Zaandam</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-alkmaar/"><em>[NH]</em><span>Alkmaar</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-hoorn/"><em>[NH]</em><span>Hoorn</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-den-helder/"><em>[NH]</em><span>Den Helder</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-hilversum/"><em>[NH]</em><span>Hilversum</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-almere/"><em>[FL]</em><span>Almere</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-lelystad/"><em>[FL]</em><span>Lelystad</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-utrecht/"><em>[UT]</em><span>Utrecht</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amersfoort/"><em>[UT]</em><span>Amersfoort</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-hoofddorp/"><em>[NH]</em><span>Hoofddorp</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-amstelveen/"><em>[NH]</em><span>Amstelveen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-diemen/"><em>[NH]</em><span>Diemen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-purmerend/"><em>[NH]</em><span>Purmerend</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-beverwijk/"><em>[NH]</em><span>Beverwijk</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-ijmuiden/"><em>[NH]</em><span>IJmuiden</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-heemskerk/"><em>[NH]</em><span>Heemskerk</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-castricum/"><em>[NH]</em><span>Castricum</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-heerhugowaard/"><em>[NH]</em><span>Heerhugowaard</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-enkhuizen/"><em>[NH]</em><span>Enkhuizen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-volendam/"><em>[NH]</em><span>Volendam</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-bussum/"><em>[NH]</em><span>Bussum</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-huizen/"><em>[NH]</em><span>Huizen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-laren/"><em>[NH]</em><span>Laren</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-aalsmeer/"><em>[NH]</em><span>Aalsmeer</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-uithoorn/"><em>[NH]</em><span>Uithoorn</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-zandvoort/"><em>[NH]</em><span>Zandvoort</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-heemstede/"><em>[NH]</em><span>Heemstede</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-dronten/"><em>[FL]</em><span>Dronten</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-zeewolde/"><em>[FL]</em><span>Zeewolde</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-emmeloord/"><em>[FL]</em><span>Emmeloord</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-urk/"><em>[FL]</em><span>Urk</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-nieuwegein/"><em>[UT]</em><span>Nieuwegein</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-zeist/"><em>[UT]</em><span>Zeist</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-houten/"><em>[UT]</em><span>Houten</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-veenendaal/"><em>[UT]</em><span>Veenendaal</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-woerden/"><em>[UT]</em><span>Woerden</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-ijsselstein/"><em>[UT]</em><span>IJsselstein</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-maarssen/"><em>[UT]</em><span>Maarssen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-bilthoven/"><em>[UT]</em><span>Bilthoven</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-soest/"><em>[UT]</em><span>Soest</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-baarn/"><em>[UT]</em><span>Baarn</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-leusden/"><em>[UT]</em><span>Leusden</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-vianen/"><em>[UT]</em><span>Vianen</span><i></i></a></li>
-        <li><a href="lachgas-bezorgen-driebergen/"><em>[UT]</em><span>Driebergen</span><i></i></a></li>
-      </ul>
-    </div>
+    <div class="cta-mini"><span>Snel antwoord nodig?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block" id="faq">
+  <section class="block alt has-cta" id="plaatsen">
+    <div class="bhead" aria-hidden="true"><small>16</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M16 34s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13z"/><circle cx="16" cy="21" r="2.5"/><path d="M34 26s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10z"/><circle cx="34" cy="16" r="2"/><path d="M8 40h32"/></svg></div>
+    <div class="rv hd"><div class="kicker">Bezorgplaatsen</div><h2 class="t">Meer dan vijftig plaatsen. Dezelfde 20 minuten.</h2>
+    <p class="lead">Elke plaats heeft een eigen pagina met bezorgtijd, wijken en contact. Staat jouw plaats er niet bij? Vraag het aan.</p><figure class="still" aria-hidden="true"><img src="assets/still-aarde-720.webp" srcset="assets/still-aarde-720.webp 720w, assets/still-aarde-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Bezorggebied · 24/7</figcaption></figure></div>
+    <div class="dir rv" id="bezorgplaatsen">
+      <details class="dirp nh" open><summary><b>Noord-Holland</b><span>33 plaatsen</span><i></i></summary><ul class="chips"><li><a href="lachgas-bezorgen-amsterdam/">Amsterdam</a></li><li><a href="lachgas-bezorgen-amsterdam-centrum/">Amsterdam Centrum</a></li><li><a href="lachgas-bezorgen-amsterdam-noord/">Amsterdam Noord</a></li><li><a href="lachgas-bezorgen-amsterdam-nieuw-west/">Amsterdam Nieuw-West</a></li><li><a href="lachgas-bezorgen-amsterdam-oost/">Amsterdam Oost</a></li><li><a href="lachgas-bezorgen-amsterdam-west/">Amsterdam West</a></li><li><a href="lachgas-bezorgen-amsterdam-zuid/">Amsterdam Zuid</a></li><li><a href="lachgas-bezorgen-amsterdam-zuidoost/">Amsterdam Zuidoost</a></li><li><a href="lachgas-bezorgen-weesp/">Weesp</a></li><li><a href="lachgas-bezorgen-amstelveen/">Amstelveen</a></li><li><a href="lachgas-bezorgen-diemen/">Diemen</a></li><li><a href="lachgas-bezorgen-haarlem/">Haarlem</a></li><li><a href="lachgas-bezorgen-zaandam/">Zaandam</a></li><li><a href="lachgas-bezorgen-alkmaar/">Alkmaar</a></li><li><a href="lachgas-bezorgen-hoorn/">Hoorn</a></li><li><a href="lachgas-bezorgen-den-helder/">Den Helder</a></li><li><a href="lachgas-bezorgen-hilversum/">Hilversum</a></li><li><a href="lachgas-bezorgen-hoofddorp/">Hoofddorp</a></li><li><a href="lachgas-bezorgen-purmerend/">Purmerend</a></li><li><a href="lachgas-bezorgen-beverwijk/">Beverwijk</a></li><li><a href="lachgas-bezorgen-ijmuiden/">IJmuiden</a></li><li><a href="lachgas-bezorgen-heemskerk/">Heemskerk</a></li><li><a href="lachgas-bezorgen-castricum/">Castricum</a></li><li><a href="lachgas-bezorgen-heerhugowaard/">Heerhugowaard</a></li><li><a href="lachgas-bezorgen-enkhuizen/">Enkhuizen</a></li><li><a href="lachgas-bezorgen-volendam/">Volendam</a></li><li><a href="lachgas-bezorgen-bussum/">Bussum</a></li><li><a href="lachgas-bezorgen-huizen/">Huizen</a></li><li><a href="lachgas-bezorgen-laren/">Laren</a></li><li><a href="lachgas-bezorgen-aalsmeer/">Aalsmeer</a></li><li><a href="lachgas-bezorgen-uithoorn/">Uithoorn</a></li><li><a href="lachgas-bezorgen-zandvoort/">Zandvoort</a></li><li><a href="lachgas-bezorgen-heemstede/">Heemstede</a></li></ul></details>
+      <details class="dirp fl" open><summary><b>Flevoland</b><span>6 plaatsen</span><i></i></summary><ul class="chips"><li><a href="lachgas-bezorgen-almere/">Almere</a></li><li><a href="lachgas-bezorgen-lelystad/">Lelystad</a></li><li><a href="lachgas-bezorgen-dronten/">Dronten</a></li><li><a href="lachgas-bezorgen-zeewolde/">Zeewolde</a></li><li><a href="lachgas-bezorgen-emmeloord/">Emmeloord</a></li><li><a href="lachgas-bezorgen-urk/">Urk</a></li></ul></details>
+      <details class="dirp ut" open><summary><b>Utrecht</b><span>15 plaatsen</span><i></i></summary><ul class="chips"><li><a href="lachgas-bezorgen-utrecht/">Utrecht</a></li><li><a href="lachgas-bezorgen-amersfoort/">Amersfoort</a></li><li><a href="lachgas-bezorgen-nieuwegein/">Nieuwegein</a></li><li><a href="lachgas-bezorgen-zeist/">Zeist</a></li><li><a href="lachgas-bezorgen-houten/">Houten</a></li><li><a href="lachgas-bezorgen-veenendaal/">Veenendaal</a></li><li><a href="lachgas-bezorgen-woerden/">Woerden</a></li><li><a href="lachgas-bezorgen-ijsselstein/">IJsselstein</a></li><li><a href="lachgas-bezorgen-maarssen/">Maarssen</a></li><li><a href="lachgas-bezorgen-bilthoven/">Bilthoven</a></li><li><a href="lachgas-bezorgen-soest/">Soest</a></li><li><a href="lachgas-bezorgen-baarn/">Baarn</a></li><li><a href="lachgas-bezorgen-leusden/">Leusden</a></li><li><a href="lachgas-bezorgen-vianen/">Vianen</a></li><li><a href="lachgas-bezorgen-driebergen/">Driebergen</a></li></ul></details>
+    </div>
+    <div class="cta-mini"><span>Jouw plaats er niet bij?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
+  </section>
+
+  <section class="block has-cta" id="faq">
+    <div class="bhead" aria-hidden="true"><small>17</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M19 19a5 5 0 1 1 7 4.6c-1.4.7-2 1.6-2 3.4M24 33v1"/></svg></div>
     <div class="rv"><div class="kicker">Vragen</div><h2 class="t">Wat klanten ons vragen.</h2></div>
     <div class="faq rv">
       <details><summary>Hoe snel zijn jullie op locatie?</summary><p>Binnen 20 minuten in ons bezorggebied, 24 uur per dag en 7 dagen per week. De koerier vertrekt direct uit ons eigen magazijn.</p></details>
@@ -1338,9 +1581,11 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
       <details><summary>Hoe kan ik betalen?</summary><p>Bij levering met pin of contant, of op factuur voor bedrijven <span class="ph">[bevestigen]</span>. Vermeld je bedrijfsnaam bij de bestelling.</p></details>
       <details><summary>Wat doe ik met een lege cilinder?</summary><p>Geef hem mee aan de koerier bij de volgende levering of breng hem naar het oud ijzer. De cilinder is van staal en volledig recyclebaar.</p></details>
     </div>
+    <div class="cta-mini"><span>Andere vraag?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
   <section class="block alt" id="over">
+    <div class="bhead" aria-hidden="true"><small>18</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40V18l18-10 18 10v22M12 40V26h24v14M18 40v-8h12v8"/></svg></div>
     <div class="split">
       <div class="rv"><div class="kicker">Over ons</div><h2 class="t">Fastgas Service NL.</h2>
       <p class="lead">Een leverancier met een eigen magazijn en eigen koeriers, gebouwd rond één product en één belofte: de Fastgas cilinder van 2000 gram, dag en nacht binnen 20 minuten bij elke gelegenheid in Noord-Holland, Flevoland en Utrecht.</p>
@@ -1359,9 +1604,10 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
     </div>
   </section>
 
-  <div class="ticker rev" aria-hidden="true"><div class="tk"><span>Binnen 20 minuten op locatie</span><span>24 uur per dag, 7 dagen per week</span><span>Noord-Holland · Flevoland · Utrecht</span><span>Eén cilinder, zo'n 250 vullingen</span><span>Getest op 165 bar</span><span>Bezorgd voordat de gasten het merken</span><span>Snel geregeld. Goed geregeld.</span><span>Voor elke gelegenheid</span><span>Eigen magazijn, eigen koeriers</span></div></div>
-
   <section class="block cta-close" id="bestellen">
+    <img class="bgstill" src="assets/still-magazijn-720.webp" srcset="assets/still-magazijn-720.webp 720w, assets/still-magazijn-1400.webp 1400w" sizes="100vw" width="1400" height="788" alt="" loading="lazy" decoding="async">
+    <div class="bhead" aria-hidden="true"><small>19</small><b>Contact</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32v22H20l-8 6v-6H8z"/><path d="M15 18h18M15 24h11"/></svg></div>
+    <div class="ticker rev" aria-hidden="true"><div class="tk"><span>Binnen 20 minuten op locatie</span><span>24 uur per dag, 7 dagen per week</span><span>Noord-Holland · Flevoland · Utrecht</span><span>Eén cilinder, zo'n 250 vullingen</span><span>Getest op 165 bar</span><span>Bezorgd voordat de gasten het merken</span><span>Snel geregeld. Goed geregeld.</span><span>Voor elke gelegenheid</span><span>Eigen magazijn, eigen koeriers</span></div></div>
     <div class="rv"><div class="kicker">Lachgas Amsterdam nodig?</div><h2 class="t slogan" id="slogan" data-slogans="Altijd op tijd. Altijd geregeld.|Bezorgd voordat het feest begint.|Eén belletje. Twintig minuten.|Dag en nacht. Deur tot deur.|Snel geregeld. Goed geregeld.">Altijd op tijd. Altijd geregeld.</h2>
     <p class="lead">Eén bericht of één belletje en de koerier vertrekt. Binnen 20 minuten op locatie, dag en nacht, voor elke gelegenheid.</p>
     <div class="hero-cta"><a class="btn" href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>Offerte via WhatsApp</a><a class="btn alt" href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bel <span class="ph">[telefoonnummer]</span></a></div></div>
@@ -1369,6 +1615,7 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
 
   <section class="offerte" id="offerte">
     <div class="wrap">
+    <div class="bhead" aria-hidden="true"><small>20</small><b>Contact</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 8h7l3 8-4 3a20 20 0 0 0 9 9l3-4 8 3v7a3 3 0 0 1-3 3A28 28 0 0 1 11 11a3 3 0 0 1 3-3z"/></svg></div>
       <div class="rv"><div class="kicker">Offerte</div><h2 class="t">Klaar om door te gaan?</h2>
       <p class="lead">Offertes gaan via WhatsApp of telefoon. Stuur een bericht of bel, je krijgt direct een prijs per cilinder en de bezorgtijd voor jouw locatie. Dag en nacht, zeven dagen per week.</p></div>
       <div class="contact rv">
@@ -1394,7 +1641,7 @@ main > .block,main > .offerte,footer{content-visibility:auto;contain-intrinsic-s
     <a class="fab-item wa" href="#" data-ph="whatsapp"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg></span><span class="tx">WhatsApp<small>Offerte of bestelling</small></span></a>
     <a class="fab-item tel" href="#" data-ph="tel"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg></span><span class="tx">Bellen<small>24/7 bereikbaar</small></span></a>
   </div>
-  <button class="fab-btn" id="fabBtn" type="button" aria-expanded="false" aria-controls="fabMenu" aria-label="Contact: WhatsApp of bellen"><span class="i1"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M4 5.5h16v10H9l-4 3.5v-3.5H4z"/><path fill="currentColor" d="M8 9.5h8v1.6H8zM8 12.2h5v1.6H8z"/></svg></span><span class="i2" aria-hidden="true"></span><i class="pulse"></i></button>
+  <button class="fab-btn" id="fabBtn" type="button" aria-expanded="false" aria-controls="fabMenu" aria-label="Contact: WhatsApp of bellen"><span class="i1"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M4 5.5h16v10H9l-4 3.5v-3.5H4z"/><path fill="currentColor" d="M8 9.5h8v1.6H8zM8 12.2h5v1.6H8z"/></svg></span><span class="i2" aria-hidden="true"></span><span class="lb" aria-hidden="true">Contact</span><i class="pulse"></i></button>
 </div>
 <script type="application/json" id="cityData">[{"n":"Amsterdam","s":"lachgas-bezorgen-amsterdam","p":"Noord-Holland","w":[]},{"n":"Haarlem","s":"lachgas-bezorgen-haarlem","p":"Noord-Holland","w":[]},{"n":"Zaandam","s":"lachgas-bezorgen-zaandam","p":"Noord-Holland","w":[]},{"n":"Alkmaar","s":"lachgas-bezorgen-alkmaar","p":"Noord-Holland","w":[]},{"n":"Hoorn","s":"lachgas-bezorgen-hoorn","p":"Noord-Holland","w":[]},{"n":"Den Helder","s":"lachgas-bezorgen-den-helder","p":"Noord-Holland","w":[]},{"n":"Hilversum","s":"lachgas-bezorgen-hilversum","p":"Noord-Holland","w":[]},{"n":"Almere","s":"lachgas-bezorgen-almere","p":"Flevoland","w":[]},{"n":"Lelystad","s":"lachgas-bezorgen-lelystad","p":"Flevoland","w":[]},{"n":"Utrecht","s":"lachgas-bezorgen-utrecht","p":"Utrecht","w":[]},{"n":"Amersfoort","s":"lachgas-bezorgen-amersfoort","p":"Utrecht","w":[]},{"n":"Amsterdam Centrum","s":"lachgas-bezorgen-amsterdam-centrum","p":"Noord-Holland","w":["Jordaan","Grachtengordel","Negen Straatjes","Nieuwmarkt","De Wallen","Oostelijke Eilanden","Plantage","Haarlemmerbuurt"]},{"n":"Amsterdam Noord","s":"lachgas-bezorgen-amsterdam-noord","p":"Noord-Holland","w":["NDSM-werf","Buiksloterham","Van der Pekbuurt","Vogelbuurt","Tuindorp Oostzaan","Nieuwendam","Molenwijk","Overhoeks"]},{"n":"Amsterdam Nieuw-West","s":"lachgas-bezorgen-amsterdam-nieuw-west","p":"Noord-Holland","w":["Sloterdijk","Osdorp","Geuzenveld","Slotermeer","Slotervaart","Overtoomse Veld","De Aker","Nieuw Sloten"]},{"n":"Amsterdam Oost","s":"lachgas-bezorgen-amsterdam-oost","p":"Noord-Holland","w":["Indische Buurt","Watergraafsmeer","Oud-Oost","Dapperbuurt","Oosterparkbuurt","Science Park","IJburg","Zeeburgereiland"]},{"n":"Amsterdam West","s":"lachgas-bezorgen-amsterdam-west","p":"Noord-Holland","w":["Oud-West","De Baarsjes","Bos en Lommer","Mercatorplein","Kinkerbuurt","Staatsliedenbuurt","Westerpark","Frederik Hendrikbuurt"]},{"n":"Amsterdam Zuid","s":"lachgas-bezorgen-amsterdam-zuid","p":"Noord-Holland","w":["De Pijp","Oud-Zuid","Museumkwartier","Rivierenbuurt","Zuidas","Beethovenstraat","Apollolaan","Buitenveldert"]},{"n":"Amsterdam Zuidoost","s":"lachgas-bezorgen-amsterdam-zuidoost","p":"Noord-Holland","w":["Bijlmer-Centrum","Bijlmer-Oost","Gaasperdam","Holendrecht","Bullewijk","Driemond","Arena-gebied","Amstel III"]},{"n":"Weesp","s":"lachgas-bezorgen-weesp","p":"Noord-Holland","w":["Binnenstad","Aetsveld","Hogewey","Leeuwenveld","Bloemendalerpolder","Weespersluis"]},{"n":"Hoofddorp","s":"lachgas-bezorgen-hoofddorp","p":"Noord-Holland","w":["Centrum","Floriande","Toolenburg","Overbos","Pax","Bornholm","Graan voor Visch","Schiphol-Rijk","Schiphol","Nieuw-Vennep"]},{"n":"Amstelveen","s":"lachgas-bezorgen-amstelveen","p":"Noord-Holland","w":["Stadshart","Oude Dorp","Westwijk","Kostverloren","Bovenkerk","Uilenstede","Elsrijk"]},{"n":"Diemen","s":"lachgas-bezorgen-diemen","p":"Noord-Holland","w":["Diemen-Centrum","Diemen-Noord","Diemen-Zuid","Holland Park","Bergwijkpark"]},{"n":"Purmerend","s":"lachgas-bezorgen-purmerend","p":"Noord-Holland","w":["Centrum","Weidevenne","Purmer-Noord","Purmer-Zuid","Overwhere","Wheermolen","Gors"]},{"n":"Beverwijk","s":"lachgas-bezorgen-beverwijk","p":"Noord-Holland","w":["Centrum","Kuenenplein","Meerestein","Oosterwijk","Westertuinen","Wijk aan Zee"]},{"n":"IJmuiden","s":"lachgas-bezorgen-ijmuiden","p":"Noord-Holland","w":["Oud-IJmuiden","Zeewijk","IJmuiden-Noord","Velsen-Zuid","Driehuis","Santpoort"]},{"n":"Heemskerk","s":"lachgas-bezorgen-heemskerk","p":"Noord-Holland","w":["Centrum","Broekpolder","Heemskerkerduin","Waterakkers","Assumburg"]},{"n":"Castricum","s":"lachgas-bezorgen-castricum","p":"Noord-Holland","w":["Centrum","Bakkum","Castricum aan Zee","Limmen","Akersloot"]},{"n":"Heerhugowaard","s":"lachgas-bezorgen-heerhugowaard","p":"Noord-Holland","w":["Centrum","Stad van de Zon","Butterhuizen","Rivierenwijk","Zuidwijk","Langedijk"]},{"n":"Enkhuizen","s":"lachgas-bezorgen-enkhuizen","p":"Noord-Holland","w":["Binnenstad","Kadijken","Oude Gouw","Gommerwijk","Bovenkarspel"]},{"n":"Volendam","s":"lachgas-bezorgen-volendam","p":"Noord-Holland","w":["Centrum","De Dijk","Blokgouw","Edam","Monnickendam"]},{"n":"Bussum","s":"lachgas-bezorgen-bussum","p":"Noord-Holland","w":["Centrum","Brediuskwartier","Spiegel","Westereng","Naarden-Vesting","Muiden"]},{"n":"Huizen","s":"lachgas-bezorgen-huizen","p":"Noord-Holland","w":["Oude Dorp","Huizermaat","Oostermeent","Stad en Lande","Haven"]},{"n":"Laren","s":"lachgas-bezorgen-laren","p":"Noord-Holland","w":["Centrum","Blaricum","Bijvanck","Eemnes"]},{"n":"Aalsmeer","s":"lachgas-bezorgen-aalsmeer","p":"Noord-Holland","w":["Centrum","Kudelstaart","Hornmeer","Oosteinde","Westeinderplassen"]},{"n":"Uithoorn","s":"lachgas-bezorgen-uithoorn","p":"Noord-Holland","w":["Centrum","Zijdelwaard","Meerwijk","Thamerdal","De Kwakel"]},{"n":"Zandvoort","s":"lachgas-bezorgen-zandvoort","p":"Noord-Holland","w":["Centrum","Boulevard","Bentveld","Nieuw-Noord","Circuit"]},{"n":"Heemstede","s":"lachgas-bezorgen-heemstede","p":"Noord-Holland","w":["Centrum","Merlenhoven","Indische Buurt","Bennebroek"]},{"n":"Dronten","s":"lachgas-bezorgen-dronten","p":"Flevoland","w":["Centrum","De Munten","De Gilden","Biddinghuizen","Swifterbant"]},{"n":"Zeewolde","s":"lachgas-bezorgen-zeewolde","p":"Flevoland","w":["Centrum","Polderwijk","Horsterveld","Harderhaven"]},{"n":"Emmeloord","s":"lachgas-bezorgen-emmeloord","p":"Flevoland","w":["Centrum","Espelervaart","Emmelhage","De Erven","Noordoostpolder"]},{"n":"Urk","s":"lachgas-bezorgen-urk","p":"Flevoland","w":["Oud Urk","De Haven","Zeewijk","Oranjewijk"]},{"n":"Nieuwegein","s":"lachgas-bezorgen-nieuwegein","p":"Utrecht","w":["City","Batau","Fokkesteeg","Doorslag","Zuilenstein","Galecop","Vreeswijk"]},{"n":"Zeist","s":"lachgas-bezorgen-zeist","p":"Utrecht","w":["Centrum","Kerckebosch","Vollenhove","Den Dolder","Austerlitz","Bosch en Duin"]},{"n":"Houten","s":"lachgas-bezorgen-houten","p":"Utrecht","w":["Centrum","Het Rond","Castellum","Schalkwijk","'t Goy"]},{"n":"Veenendaal","s":"lachgas-bezorgen-veenendaal","p":"Utrecht","w":["Centrum","Veenendaal-Oost","Dragonder","Petenbos","Het Ambacht"]},{"n":"Woerden","s":"lachgas-bezorgen-woerden","p":"Utrecht","w":["Binnenstad","Snel en Polanen","Molenvliet","Harmelen","Kamerik"]},{"n":"IJsselstein","s":"lachgas-bezorgen-ijsselstein","p":"Utrecht","w":["Binnenstad","Zenderpark","Achterveld","Groenvliet"]},{"n":"Maarssen","s":"lachgas-bezorgen-maarssen","p":"Utrecht","w":["Maarssen-Dorp","Maarssenbroek","Breukelen","Loenen aan de Vecht","Vreeland"]},{"n":"Bilthoven","s":"lachgas-bezorgen-bilthoven","p":"Utrecht","w":["Centrum","De Bilt","Maartensdijk","Groenekan","Hollandsche Rading"]},{"n":"Soest","s":"lachgas-bezorgen-soest","p":"Utrecht","w":["Soest-Zuid","Soestdijk","Soesterberg","Overhees","Klaarwater"]},{"n":"Baarn","s":"lachgas-bezorgen-baarn","p":"Utrecht","w":["Centrum","Lage Vuursche","Eemnes","Paleis Soestdijk"]},{"n":"Leusden","s":"lachgas-bezorgen-leusden","p":"Utrecht","w":["Centrum","Leusden-Zuid","Achterveld","Tabaksteeg"]},{"n":"Vianen","s":"lachgas-bezorgen-vianen","p":"Utrecht","w":["Binnenstad","Hagestein","Everdingen","Lexmond"]},{"n":"Driebergen","s":"lachgas-bezorgen-driebergen","p":"Utrecht","w":["Driebergen-Rijsenburg","Doorn","Maarn","Leersum"]}]</script>
 <script src="assets/motion.js"></script>
@@ -1425,7 +1672,7 @@ if(intro){
     const fontsReady=(document.fonts&&document.fonts.load)?Promise.race([document.fonts.load('800 1em "Barlow Condensed"'),new Promise(r=>setTimeout(r,900))]):Promise.resolve();
     fontsReady.then(()=>{ document.body.classList.add('fonts');
       const typeLine=(el,delay,speed)=>{ const text=el.dataset.text||''; let c=0; const t=()=>{ c++; el.innerHTML=text.slice(0,c).replace(/(24\/7|20 minuten)/g,'<b>$1</b>'); if(c<text.length)setTimeout(t,speed+Math.random()*speed); else el.classList.add('done'); }; setTimeout(t,delay); };
-      typeLine(document.getElementById('hudTop'),3800,14); typeLine(document.getElementById('hudMid'),4400,22);
+      typeLine(document.getElementById('hudTop'),900,14); typeLine(document.getElementById('hudMid'),1500,22);
       const exitIntro=()=>{
         const mark=intro.querySelector('.intro-mark'), hdr=document.getElementById('hdrMark');
         intro.classList.add('out');
@@ -1441,7 +1688,7 @@ if(intro){
           if(anim&&anim.finished) anim.finished.then(land,land); setTimeout(land,1250);
         }; requestAnimationFrame(()=>requestAnimationFrame(go)); setTimeout(go,120); setTimeout(land,1500);
         setTimeout(()=>intro.remove(),1800); };
-      const t0=performance.now(); const waitLive=()=>{ const ready=stage.classList.contains('live')||loadFrac>=0.999; const dt=performance.now()-t0; if((ready&&dt>=5600)||dt>=8500){ if(loader){loader.style.setProperty('--p','1');introLine.style.setProperty('--p','1');} setTimeout(exitIntro,ready?250:0); } else setTimeout(waitLive,100); }; waitLive(); });
+      const t0=performance.now(); const waitLive=()=>{ const ready=stage.classList.contains('live')||loadFrac>=0.999; const dt=performance.now()-t0; if((ready&&dt>=3300)||dt>=6200){ if(loader){loader.style.setProperty('--p','1');introLine.style.setProperty('--p','1');} setTimeout(exitIntro,ready?250:0); } else setTimeout(waitLive,100); }; waitLive(); });
   }
 } else finishIntro();
 
@@ -1548,15 +1795,14 @@ video.addEventListener('seeked',()=>{seekBusy=false;if(pendingTime!==null){const
 video.addEventListener('error',()=>{seekBusy=false;pendingTime=null;ring.classList.add('done')});
 async function initVideo(){
   if(videoInit)return; videoInit=true;
+  /* v37b: stream the file (the host answers range requests), so the first frame is live after the first few hundred KB and a
+     seek into an unbuffered part fetches only that part. Loader shows the buffered share. */
   try{
-    const ctrl=new AbortController(); let watchdog=setTimeout(()=>ctrl.abort(),25000);
-    const res=await fetch(VIDEO_URL,{priority:'low',signal:ctrl.signal}); if(!res.ok)throw new Error(res.status);
-    const total=Number(res.headers.get('Content-Length'))||VIDEO_BYTES; const reader=res.body.getReader(); const chunks=[]; let got=0;
-    for(;;){const {done,value}=await reader.read(); if(done)break; clearTimeout(watchdog); watchdog=setTimeout(()=>ctrl.abort(),25000); chunks.push(value); got+=value.length; ringSet(Math.min(1,got/total)*0.98,performance.now());}
-    clearTimeout(watchdog);
-    video.src=URL.createObjectURL(new Blob(chunks,{type:'video/mp4'})); video.load();
+    const onProg=()=>{ try{ const b=video.buffered, d=video.duration||VIDEO_DURATION; let e=0; for(let i=0;i<b.length;i++)e=Math.max(e,b.end(i)); ringSet(Math.min(1,e/d),performance.now()); }catch(e){} };
+    video.addEventListener('progress',onProg);
+    video.preload='auto'; video.src=VIDEO_URL; video.load();
     await new Promise((res,rej)=>{video.addEventListener('loadedmetadata',res,{once:true});video.addEventListener('error',rej,{once:true})});
-    videoReady=true; ringSet(1,performance.now());
+    videoReady=true; onProg();
     video.addEventListener('seeked',()=>{if(mode==='video')stage.classList.add('live')},{once:true});
     lastSeek=-1; requestSeek(progress()*video.duration);
   }catch(e){ ring.classList.add('done'); }
@@ -1644,10 +1890,90 @@ reduce.addEventListener('change',applyMode);
 addEventListener('resize',()=>{ const pBefore=progress(); measure(); const y=hero.offsetTop+pBefore*range; if(Math.abs(scrollY-y)>2&&heroOnScreen)scrollTo(0,y); target=shown=progress(); lastKey=''; needsDraw=true; wake(); },{passive:true});
 applyMode();
 
+/* ---------- v37e: scene rests: when scrolling stops inside the journey, the page glides to the nearest scene ---------- */
+const RESTS=[{t:0},{t:2.6},{t:6.2},{t:10.04,hold:.45},{t:12.9},{t:17.8},{t:25.0},{t:31.4},{t:VIDEO_DURATION,hold:.35}];
+function scrollForTime(t,holdFrac){
+  if(holdFrac!=null){ const h=PACE.find(r=>r.t0===r.t1&&Math.abs(r.t0-t)<1e-6); if(h) return h.s0+(h.s1-h.s0)*holdFrac; }
+  for(const r of PACE){ if(r.t1>r.t0&&t>=r.t0&&t<=r.t1){ let lo=r.s0,hi=r.s1; for(let i=0;i<32;i++){ const mid=(lo+hi)/2; if(paceMap(mid)*VIDEO_DURATION<t)lo=mid; else hi=mid; } return (lo+hi)/2; } }
+  return 1;
+}
+const restPs=RESTS.map(r=>scrollForTime(r.t,r.hold)); window.__rests=restPs;
+let settleT=null, settling=null, touching=false;
+function cancelSettle(){ if(settling){cancelAnimationFrame(settling.raf);settling=null} if(settleT){clearTimeout(settleT);settleT=null} }
+function settle(){
+  settleT=null; if(settling||pageAnim||touching||reduce.matches||!heroOnScreen)return;
+  const b=document.body.classList; if(b.contains('intro-lock')||b.contains('menu-open'))return;
+  const ps=progress(); if(ps<=0||ps>=1)return;
+  let best=0,bd=9; for(let i=0;i<restPs.length;i++){ const d=Math.abs(restPs[i]-ps); if(d<bd){bd=d;best=i} }
+  if(bd<0.0015)return;
+  const y0=scrollY, y1=Math.round(hero.offsetTop+restPs[best]*range); if(Math.abs(y1-y0)<2)return;
+  const dur=Math.min(950,Math.max(420,Math.abs(y1-y0)*0.32)), t0=performance.now();
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const st={raf:0}; settling=st;
+  const step=now=>{ if(settling!==st)return; const t=clamp((now-t0)/dur,0,1); scrollTo(0,Math.round(y0+(y1-y0)*ease(t))); if(t<1)st.raf=requestAnimationFrame(step); else settling=null; };
+  st.raf=requestAnimationFrame(step);
+}
+function armSettle(){ if(settling)return; if(settleT)clearTimeout(settleT); settleT=setTimeout(settle,170); }
+addEventListener('scroll',()=>{ if(!settling)armSettle(); },{passive:true});
+['wheel','keydown','pointerdown'].forEach(ev=>addEventListener(ev,()=>{ cancelSettle(); armSettle(); },{passive:true}));
+addEventListener('touchstart',()=>{ touching=true; cancelSettle(); },{passive:true});
+addEventListener('touchend',()=>{ touching=false; armSettle(); },{passive:true});
+addEventListener('touchcancel',()=>{ touching=false; armSettle(); },{passive:true});
+
+/* ---------- v38: scene paging: one wheel tick / swipe / key = one scene; the footage plays the transition ---------- */
+let pageAnim=null, cooldownUntil=0, lastWheelT=0, lastWheelD=0, touchY=null, touchDone=false;
+function nearestRestIndex(ps){ let b=0,bd=9; for(let i=0;i<restPs.length;i++){ const d=Math.abs(restPs[i]-ps); if(d<bd){bd=d;b=i} } return b; }
+function glide(y1,dur){
+  cancelSettle(); const y0=scrollY; if(Math.abs(y1-y0)<2)return;
+  const t0=performance.now(), ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; const st={raf:0}; pageAnim=st;
+  const step=now=>{ if(pageAnim!==st)return; const t=clamp((now-t0)/dur,0,1); scrollTo(0,Math.round(y0+(y1-y0)*ease(t)));
+    if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; cooldownUntil=performance.now()+340; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')); } };
+  st.raf=requestAnimationFrame(step);
+}
+function pageScene(dir){
+  const ps=progress(); const cur=nearestRestIndex(ps); let i=cur;
+  if(dir>0&&restPs[i]<=ps+0.002)i++; else if(dir<0&&restPs[i]>=ps-0.002)i--;
+  if(i>=restPs.length){ glide(Math.round(hero.offsetTop+range+stage.clientHeight),1150); return true; }   /* out of the journey, into the first block */
+  if(i<0)return false;
+  const dt=Math.abs(RESTS[i].t-RESTS[cur].t)||2; glide(Math.round(hero.offsetTop+restPs[i]*range),clamp(dt*230,650,1600)); return true;
+}
+function pagingActive(dir){
+  if(reduce.matches||!heroOnScreen)return false; const b=document.body.classList; if(b.contains('intro-lock')||b.contains('menu-open'))return false;
+  const ps=progress(); if(ps>=1&&dir>0)return false; if(ps<=0&&dir<0)return false; return true;
+}
+addEventListener('wheel',e=>{ const dir=e.deltaY>0?1:e.deltaY<0?-1:0; if(!dir||e.ctrlKey||!pagingActive(dir))return; e.preventDefault();
+  const now=performance.now(), d=Math.abs(e.deltaY); const accel=d>lastWheelD*1.05||now-lastWheelT>220; lastWheelT=now; lastWheelD=d;
+  if(pageAnim||now<cooldownUntil||!accel||d<6)return; pageScene(dir); },{passive:false});
+addEventListener('touchstart',e=>{ if(e.touches.length!==1){touchY=null;return} touchY=e.touches[0].clientY; touchDone=false; },{passive:true});
+document.addEventListener('touchmove',e=>{ if(touchY===null||e.touches.length!==1)return; const dy=touchY-e.touches[0].clientY; const dir=dy>0?1:-1; if(!pagingActive(dir))return; e.preventDefault();
+  if(touchDone||pageAnim||Math.abs(dy)<22)return; touchDone=true; pageScene(dir); },{passive:false});
+addEventListener('touchend',()=>{ touchY=null; },{passive:true});
+addEventListener('keydown',e=>{ if(e.target&&(e.target.matches('input,textarea,select,button,a')||e.target.isContentEditable))return; const k=e.key; const dir=(k==='ArrowDown'||k==='PageDown'||k===' ')?1:(k==='ArrowUp'||k==='PageUp')?-1:0; if(!dir||!pagingActive(dir))return; e.preventDefault(); if(pageAnim)return; pageScene(dir); });
+window.__pageScene=pageScene;
+
 /* ---------- Below the journey: reveal on scroll, counters, safety stripe, offerte form (JS-only success; DEPLOY STEP: connect to mail or a form service) ---------- */
 const countUp=el=>{ const end=+el.dataset.count, t0=performance.now(), dur=1400; const step=now=>{ const t=clamp((now-t0)/dur,0,1), e=1-Math.pow(1-t,3); el.textContent=String(Math.round(end*e)); if(t<1)requestAnimationFrame(step); }; requestAnimationFrame(step); };
-const revealer=new IntersectionObserver(es=>{ for(const e of es){ if(!e.isIntersecting)continue; e.target.classList.add('in'); e.target.querySelectorAll('.kicker').forEach(decode); e.target.querySelectorAll('[data-count]').forEach(reduce.matches?(el=>el.textContent=String(+el.dataset.count)):countUp); revealer.unobserve(e.target); } },{threshold:0.2});
-document.querySelectorAll('.rv,.stripe').forEach(el=>revealer.observe(el));
+/* v37: one coordinated reveal per block (kicker, title, lead, then the items in order), replayed when a block comes back */
+const blocks=Array.from(document.querySelectorAll('main > section:not(#hero)'));
+blocks.forEach(b=>b.querySelectorAll('.rv').forEach((el,i)=>el.style.setProperty('--i',i)));
+const setNum=el=>{ el.querySelectorAll('[data-count]').forEach(reduce.matches?(x=>x.textContent=String(+x.dataset.count)):countUp); };
+const blockIO=new IntersectionObserver(es=>{ for(const e of es){ const b=e.target;
+  if(e.intersectionRatio>=0.2&&!b.classList.contains('in')){ b.classList.add('in'); b.querySelectorAll('.rv').forEach(el=>el.classList.add('in')); b.querySelectorAll('.kicker').forEach(decode); setNum(b); }
+  else if(!e.isIntersecting&&b.classList.contains('in')&&!reduce.matches){ b.classList.remove('in'); b.querySelectorAll('.rv').forEach(el=>el.classList.remove('in')); b.querySelectorAll('.kicker').forEach(k=>{ delete k.dataset.decoded; k.textContent=k.dataset.text||k.textContent; }); }
+} },{threshold:[0,0.2]});
+blocks.forEach(b=>blockIO.observe(b));
+/* dots navigation (desktop, past the hero) */
+(function(){
+  if(!matchMedia('(pointer:fine)').matches||innerWidth<900)return;
+  const nav=document.createElement('nav'); nav.className='dots'; nav.setAttribute('aria-label','Secties');
+  const home=document.createElement('button'); home.type='button'; home.dataset.for='hero'; home.innerHTML='<i></i><span>Journey · Terug naar boven</span>'; home.addEventListener('click',()=>goTo('#top')); nav.appendChild(home);
+  blocks.forEach(b=>{ const h=b.querySelector('h2'); const g=b.querySelector('.bhead b'); const btn=document.createElement('button'); btn.type='button'; btn.dataset.for=b.id; btn.innerHTML='<i></i><span>'+(g?g.textContent+' · ':'')+(h?h.textContent.replace(/\s+/g,' ').trim():b.id)+'</span>'; btn.addEventListener('click',()=>b.scrollIntoView({behavior:'smooth'})); nav.appendChild(btn); });
+  document.body.appendChild(nav);
+  const act=new IntersectionObserver(es=>{ for(const e of es){ if(e.intersectionRatio>=0.5){ nav.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.for===e.target.id)); } } },{threshold:[0.5]});
+  blocks.forEach(b=>act.observe(b));
+})();
+/* phones: the directory folds per province */
+if(matchMedia('(max-width:720px)').matches) document.querySelectorAll('.dirp[open]').forEach(d=>d.removeAttribute('open'));
 /* ---------- Menu, anchors, header state, touch lock ---------- */
 const menuBtn=document.getElementById('menuBtn');
 function setMenu(open){ document.body.classList.toggle('menu-open',open); menuBtn.setAttribute('aria-expanded',String(open)); menuBtn.setAttribute('aria-label',open?'Menu sluiten':'Menu openen'); document.getElementById('menu').setAttribute('aria-hidden',String(!open)); }
@@ -1655,10 +1981,10 @@ menuBtn.addEventListener('click',()=>setMenu(!document.body.classList.contains('
 document.getElementById('menuBg').addEventListener('click',()=>setMenu(false));
 const setHdr=()=>document.documentElement.style.setProperty('--hdr',document.getElementById('topbar').offsetHeight+'px'); setHdr(); addEventListener('resize',setHdr,{passive:true}); addEventListener('scroll',()=>{ if(!document.body.classList.contains('menu-open'))setHdr(); },{passive:true});
 addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.contains('menu-open')){setMenu(false);menuBtn.focus()} });
-function goTo(hash){ if(hash==='#top'){scrollTo(0,0);return} if(hash==='#bezorging'){ measure(); scrollTo(0,hero.offsetTop+range*0.94); return } const t=document.querySelector(hash); if(t)t.scrollIntoView(); }
+function goTo(hash){ if(hash==='#top'||hash==='#bezorging'){ document.documentElement.classList.remove('snap'); hdrSolid=false; document.body.classList.remove('scrolled-page'); } if(hash==='#top'){scrollTo(0,0);return} if(hash==='#bezorging'){ measure(); scrollTo(0,hero.offsetTop+range*0.94); return } const t=document.querySelector(hash); if(t)t.scrollIntoView(); }
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{ const hash=a.getAttribute('href'); if(hash.length<2)return; e.preventDefault(); const wasOpen=document.body.classList.contains('menu-open'); if(wasOpen)setMenu(false); setTimeout(()=>goTo(hash),wasOpen?260:0); }));
 document.addEventListener('touchmove',e=>{ if(document.body.classList.contains('intro-lock'))e.preventDefault(); else if(document.body.classList.contains('menu-open')&&!e.target.closest('.menu-panel'))e.preventDefault(); },{passive:false});
-let hdrSolid=false; const hdrState=()=>{ const s=scrollY>hero.offsetTop+range-4; if(s!==hdrSolid){hdrSolid=s;document.body.classList.toggle('scrolled-page',s)} }; addEventListener('scroll',hdrState,{passive:true}); hdrState();
+let hdrSolid=false; const hdrState=()=>{ const s=scrollY>hero.offsetTop+range-4; if(s!==hdrSolid){hdrSolid=s;document.body.classList.toggle('scrolled-page',s);document.documentElement.classList.toggle('snap',s&&!pageAnim)} }; addEventListener('scroll',hdrState,{passive:true}); hdrState();
 /* the first caption rises only after the intro, so the title lands on a settled stage */
 const band1=bands[0]; if(band1&&!reduce.matches){ band1Floor=0; band1.el.style.setProperty('--k',0); band1.k=0; const rise=()=>{ const t0=performance.now(); const step=now=>{ const t=clamp((now-t0)/900,0,1); band1Floor=Math.round(100*t)/100; if(band1.o>0){ band1.k=band1Floor; band1.el.style.setProperty('--k',band1.k); } if(t<1)requestAnimationFrame(step); else band1Floor=1; }; requestAnimationFrame(step); }; if(document.body.classList.contains('intro-done'))rise(); else new MutationObserver((m,o)=>{ if(document.body.classList.contains('intro-done')){o.disconnect();setTimeout(rise,350)} }).observe(document.body,{attributes:true,attributeFilter:['class']}); }
 document.querySelectorAll('#holoParts .nm[data-name]').forEach(n=>{n.textContent=n.dataset.name});
@@ -1675,8 +2001,10 @@ document.querySelectorAll('#holoParts .nm[data-name]').forEach(n=>{n.textContent
   function idle(){ if(reduce.matches){ rt.innerHTML='<b>// scan actief</b> · '+(fine?'beweeg over een provincie':'tik op een provincie'); return; } typeInto(rt,'// scan actief · '+(fine?'beweeg over een oplichtende provincie':'tik op een oplichtende provincie'),s=>s.replace('// scan actief','<b>// scan actief</b>'),14); }
   fills.forEach(f=>{ const l=f.nextElementSibling; if(l&&l.classList.contains('provline')){ l.style.cssText=f.getAttribute('style'); } });
   function paint(){ fills.forEach(f=>{ f.classList.toggle('hot',f.dataset.region===hot); f.classList.toggle('dim',!!hot&&f.dataset.region!==hot); }); boxes.forEach(b=>b.classList.toggle('hot',b.dataset.region===hot)); pinsAll.forEach(p=>{ if(p.dataset.region!==hot){ p.classList.remove('show','typing','active'); p.querySelector('.nm').textContent=''; } }); }
+  const stripEl=document.getElementById('cityStrip');
+  function strip(r,pins){ /* v37g */ if(!stripEl)return; if(!r){ stripEl.textContent=''; stripEl.classList.remove('on'); return; } stripEl.textContent=''; const h=document.createElement('div'); h.className='cs-h'; h.textContent='// '+NAMES[r]+' · '+pins.length+' plaatsen · tik voor de pagina'; const l=document.createElement('div'); l.className='cs-l'; pins.forEach((p,i)=>{ const a=document.createElement('a'); a.className='cs'; a.style.setProperty('--d',(i*0.05).toFixed(2)); a.href=p.dataset.href||'#'; a.textContent=p.querySelector('.nm').dataset.name||''; l.appendChild(a); }); stripEl.appendChild(h); stripEl.appendChild(l); stripEl.classList.add('on'); }
   function reveal(r){
-    const pins=pinsAll.filter(p=>p.dataset.region===r); const count=pins.length;
+    const pins=pinsAll.filter(p=>p.dataset.region===r); const count=pins.length; strip(r,pins);
     const line='// '+NAMES[r]+' · '+count+' bezorgplaatsen · 24/7 binnen 20 min';
     if(reduce.matches){ rt.innerHTML=line.replace('// '+NAMES[r],'<b>// '+NAMES[r]+'</b>'); pins.forEach(p=>{p.classList.add('show');p.querySelector('.nm').textContent=p.querySelector('.nm').dataset.name}); return; }
     const g=typeInto(rt,line,s=>s.replace('// '+NAMES[r],'<b>// '+NAMES[r]+'</b>'),11,()=>{
@@ -1684,7 +2012,7 @@ document.querySelectorAll('#holoParts .nm[data-name]').forEach(n=>{n.textContent
         const step=()=>{ if(g!==gen||hot!==r)return; c++; nm.textContent=full.slice(0,c); if(c<full.length)timer=setTimeout(step,22+Math.random()*26); else { p.classList.remove('typing'); timer=setTimeout(next,60); } }; timer=setTimeout(step,40); };
       next(); });
   }
-  function setHot(r,stick){ if(stick!==undefined)sticky=stick; if(r===hot)return; hot=r; stats.hot=(stats.hot||0)+1; paint(); if(r)reveal(r); else idle(); }
+  function setHot(r,stick){ if(stick!==undefined)sticky=stick; if(r===hot)return; hot=r; stats.hot=(stats.hot||0)+1; paint(); if(r)reveal(r); else { idle(); strip(null); } }
   /* pixel-accurate hit test on the province masks (the same images that draw the hologram), so hover and tap follow the real shape */
   const maskPix={}; let maskKey='';
   function loadMasks(){ const key=useFrames()?'p':'d'; if(key===maskKey)return; maskKey=key; for(const r of ['nh','fl','ut']){ const img=new Image(); img.onload=()=>{ const w=480, hh=Math.round(img.naturalHeight*w/img.naturalWidth); const c=document.createElement('canvas'); c.width=w; c.height=hh; const x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(img,0,0,w,hh); maskPix[r]={w,h:hh,a:x.getImageData(0,0,w,hh).data}; }; img.src='assets/mask-'+r+'-'+key+'.png'; } }
