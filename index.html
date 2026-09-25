@@ -1162,6 +1162,49 @@ section.block.alt > .cta-mini{padding-left:0;padding-right:0;width:auto;max-widt
 main > #bestellen{content-visibility:visible;contain:none}
 @media (max-width:720px){#bestellen .ticker{display:none}}
 /* v38c */
+
+/* v39 */
+.space{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease;background:#05080f;overflow:hidden}
+body.scrolled-page .space{opacity:1}
+.space .sp{position:absolute;left:-4%;top:-4%;width:108%;height:108%;object-fit:cover;object-position:var(--pos,50% 50%);opacity:0;transform:scale(1.08);transition:opacity 1.5s ease,transform 5s cubic-bezier(.22,1,.36,1),object-position 5s cubic-bezier(.22,1,.36,1);filter:brightness(.6) saturate(.92)}
+.space .sp.on{opacity:1;transform:scale(1)}
+.space .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,15,.6),rgba(5,8,15,.28) 45%,rgba(5,8,15,.72)),radial-gradient(ellipse 55% 75% at 22% 50%,rgba(5,8,15,.5),transparent 70%)}
+main{position:relative;z-index:1}
+body.scrolled-page{background:#05080f}
+main > section.block,section.block.alt,.offerte{background:transparent}
+.offerte{border-top-color:rgba(255,255,255,.08);border-bottom-color:rgba(255,255,255,.08)}
+section.block::before{opacity:.55}
+footer{position:relative;z-index:1;background:linear-gradient(180deg,rgba(5,8,15,.6),var(--canvas) 30%)}
+.stat,.col,.steps li,.pc,.tiles a,.reasons li,.mod,.co,.calc,.spec,.hours,.contact,.dir,.cc,.bcheck-out{background-color:rgba(12,18,30,.74)}
+.col.fg{background-color:rgba(20,22,20,.8)}
+#bestellen .bgstill{display:none}
+@media (pointer:fine) and (min-width:1000px){.stat,.col,.steps li,.pc,.mod,.calc,.contact,.dir,.reasons li,.tiles a{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}}
+@media (prefers-reduced-motion:reduce){.space .sp{transition:opacity .4s ease;transform:none}}
+/* v39-shared-start */
+.menu-inner.v39{display:block;padding:24px clamp(18px,4vw,44px) 28px}
+.mtiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mt{position:relative;display:flex;flex-direction:column;gap:8px;padding:18px 18px 16px;min-height:132px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(18,26,40,.55);text-decoration:none;color:#fff;opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .55s cubic-bezier(.22,1,.36,1),border-color .25s,background .25s}
+body.menu-open .mt{opacity:1;transform:none}
+body.menu-open .mt:nth-child(1){transition-delay:.1s}body.menu-open .mt:nth-child(2){transition-delay:.14s}body.menu-open .mt:nth-child(3){transition-delay:.18s}body.menu-open .mt:nth-child(4){transition-delay:.22s}body.menu-open .mt:nth-child(5){transition-delay:.26s}body.menu-open .mt:nth-child(6){transition-delay:.3s}body.menu-open .mt:nth-child(7){transition-delay:.34s}body.menu-open .mt:nth-child(8){transition-delay:.38s}
+.mt .pict{width:30px;height:30px;color:var(--accent);fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.mt b{font:800 clamp(18px,1.6vw,22px)/1.05 var(--display);text-transform:uppercase;letter-spacing:.02em;margin-top:auto}
+.mt span{font:500 10.5px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2)}
+.mt::after{content:"";position:absolute;right:16px;top:18px;width:8px;height:8px;border-right:1px solid rgba(217,241,255,.5);border-top:1px solid rgba(217,241,255,.5);transform:rotate(45deg);transition:transform .25s,border-color .25s}
+.mt:hover,.mt:focus-visible{border-color:rgba(242,210,27,.6);background:rgba(242,210,27,.06);outline:none}
+.mt:hover::after{transform:translate(2px,-2px) rotate(45deg);border-color:var(--accent)}
+.mrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:16px;opacity:0;transform:translateY(10px);transition:opacity .5s ease .4s,transform .6s ease .4s}
+body.menu-open .mrow{opacity:1;transform:none}
+.mrow .btn{margin:0}
+.mlinks{display:flex;flex-wrap:wrap;gap:6px 18px;margin-left:auto}
+.mlinks a{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);text-decoration:none;padding:8px 0;transition:color .25s}
+.mlinks a:hover{color:#fff}
+@media (max-width:900px){.mtiles{grid-template-columns:repeat(2,1fr)}.mlinks{margin-left:0}}
+@media (max-width:720px){.menu-inner.v39{padding:16px 16px 20px}.mtiles{gap:8px}.mt{min-height:94px;padding:12px 12px 11px;gap:5px;border-radius:8px}.mt .pict{width:24px;height:24px}.mt b{font-size:16px}.mt span{font-size:9px;letter-spacing:.08em}.mt::after{right:11px;top:12px;width:7px;height:7px}.mrow{margin-top:12px;gap:8px}.mrow .btn{flex:1 1 45%;min-height:40px;font-size:13.5px;padding:0 10px}.mlinks{width:100%;gap:4px 12px}.mlinks a{font-size:10px}}
+@media (max-width:720px) and (max-height:700px){.mt{min-height:78px;gap:3px}.mlinks{display:none}.mt span{display:none}}
+@media (prefers-reduced-motion:reduce){.mt,.mrow{transition:none;opacity:1;transform:none}}
+/* v39-shared-end */
+/* v39b */
+@media (max-width:430px){.cta-mini span{display:none}.cta-mini{gap:6px}}
 </style>
 </head>
 <body>
@@ -1190,28 +1233,20 @@ main > #bestellen{content-visibility:visible;contain:none}
 <div class="menu" id="menu" aria-hidden="true">
   <div class="menu-bg" id="menuBg"></div>
   <div class="menu-panel">
-    <div class="menu-inner">
-      <div class="menu-col">
-        <div class="menu-h">Navigatie</div>
-        <ol class="menu-list">
-          <li><a href="#top"><small>01</small><span>Home<em>De journey van de cilinder</em></span></a></li>
-          <li><a href="#idee"><small>02</small><span>Het idee<em>Eén cilinder voor een hele service</em></span></a></li>
-          <li><a href="#verschil"><small>03</small><span>Wat het je scheelt<em>Patronen versus 2000 gram</em></span></a></li>
-          <li><a href="lachgas-horeca/"><small>04</small><span>Voor horeca<em>Keukens, bars, catering</em></span></a></li>
-          <li><a href="#bezorging"><small>05</small><span>Bezorging<em>Noord-Holland, Flevoland, Utrecht</em></span></a></li>
-          <li><a href="#amsterdam"><small>06</small><span>Lachgas Amsterdam<em>Elk stadsdeel, 24/7</em></span></a></li>
-          <li><a href="#faq"><small>07</small><span>Vragen<em>Wat klanten ons vragen</em></span></a></li>
-          <li><a href="#offerte"><small>08</small><span>Offerte<em>Via WhatsApp of telefoon, 24/7</em></span></a></li>
-        </ol>
-      </div>
-      <div class="menu-col">
-        <div class="menu-h">Bezorgplaatsen</div>
-        <ul class="menu-links cols2"><li><a href="lachgas-bezorgen-amsterdam/">Amsterdam</a></li><li><a href="lachgas-bezorgen-amsterdam-centrum/">Amsterdam Centrum</a></li><li><a href="lachgas-bezorgen-amsterdam-noord/">Amsterdam Noord</a></li><li><a href="lachgas-bezorgen-amsterdam-nieuw-west/">Amsterdam Nieuw-West</a></li><li><a href="lachgas-bezorgen-amsterdam-oost/">Amsterdam Oost</a></li><li><a href="lachgas-bezorgen-amsterdam-west/">Amsterdam West</a></li><li><a href="lachgas-bezorgen-amsterdam-zuid/">Amsterdam Zuid</a></li><li><a href="lachgas-bezorgen-amsterdam-zuidoost/">Amsterdam Zuidoost</a></li><li><a href="lachgas-bezorgen-weesp/">Weesp</a></li><li><a href="lachgas-bezorgen-amstelveen/">Amstelveen</a></li><li><a href="lachgas-bezorgen-diemen/">Diemen</a></li><li><a href="lachgas-bezorgen-hoofddorp/">Hoofddorp</a></li><li><a href="lachgas-bezorgen-purmerend/">Purmerend</a></li><li><a href="lachgas-bezorgen-nieuwegein/">Nieuwegein</a></li><li><a href="bezorggebieden/"><b>Alle bezorgplaatsen</b></a></li><li><a href="lachgas-bezorgen-haarlem/">Haarlem</a></li><li><a href="lachgas-bezorgen-zaandam/">Zaandam</a></li><li><a href="lachgas-bezorgen-alkmaar/">Alkmaar</a></li><li><a href="lachgas-bezorgen-hoorn/">Hoorn</a></li><li><a href="lachgas-bezorgen-den-helder/">Den Helder</a></li><li><a href="lachgas-bezorgen-hilversum/">Hilversum</a></li><li><a href="lachgas-bezorgen-almere/">Almere</a></li><li><a href="lachgas-bezorgen-lelystad/">Lelystad</a></li><li><a href="lachgas-bezorgen-utrecht/">Utrecht</a></li><li><a href="lachgas-bezorgen-amersfoort/">Amersfoort</a></li></ul>
-      </div>
-      <div class="menu-col">
-        <div class="menu-h">Informatie</div>
-        <ul class="menu-links"><li><a href="werkwijze/">Werkwijze</a></li><li><a href="bezorggebieden/">Bezorggebieden</a></li><li><a href="voordelen/">Voordelen</a></li><li><a href="veelgestelde-vragen/">Veelgestelde vragen</a></li><li><a href="over-ons/">Over ons</a></li><li><a href="contact/">Contact</a></li><li><a href="lachgas-bestellen/">Lachgas bestellen</a></li><li><a href="fastgas-tank-2kg/">Fastgas tank 2 kg</a></li><li><a href="lachgas-horeca/">Lachgas voor horeca</a></li><li><a href="wegwerp-lachgas-tank/">Wegwerp lachgas tank</a></li><li><a href="slagroomspuiten-en-toebehoren/">Slagroomspuiten en toebehoren</a></li><li><a href="lachgas-wetgeving/">Lachgas wetgeving</a></li><li><a href="veilig-gebruik-lachgas/">Veilig gebruik</a></li></ul>
-        <a class="btn" href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>Offerte via WhatsApp</a>
+    <div class="menu-inner v39">
+      <nav class="mtiles" aria-label="Menu">
+        <a class="mt" href="#idee"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="17" y="12" width="14" height="30" rx="4"/><path d="M21 12V8h6v4M19 20h10"/></svg><b>Product</b><span>Wegwerptank 2 kg · 250 vullingen</span></a>
+        <a class="mt" href="#werkwijze"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 42s-12-11-12-20a12 12 0 0 1 24 0c0 9-12 20-12 20z"/><circle cx="24" cy="22" r="4"/></svg><b>Bezorging</b><span>Binnen 20 min · 24/7</span></a>
+        <a class="mt" href="bezorggebieden/"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M16 34s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13z"/><circle cx="16" cy="21" r="2.5"/><path d="M34 26s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10z"/><circle cx="34" cy="16" r="2"/><path d="M8 40h32"/></svg><b>Bezorgplaatsen</b><span>Noord-Holland · Flevoland · Utrecht</span></a>
+        <a class="mt" href="#amsterdam"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 40V22l6-6 6 6v18M20 40V18l6-6 6 6v22M32 40V24l4-4 4 4v16M4 40h40"/></svg><b>Amsterdam</b><span>Elk stadsdeel, dag en nacht</span></a>
+        <a class="mt" href="lachgas-horeca/"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 24a7 7 0 0 1 2-13 8 8 0 0 1 16 0 7 7 0 0 1 2 13v14H14z"/><path d="M14 32h20"/></svg><b>Horeca & events</b><span>Keukens · bars · catering</span></a>
+        <a class="mt" href="#waarom"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l14 5v12c0 9-6 15-14 19-8-4-14-10-14-19V11z"/><path d="M17 24l5 5 9-10"/></svg><b>Waarom wij</b><span>Getest · veilig · origineel</span></a>
+        <a class="mt" href="#faq"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M19 19a5 5 0 1 1 7 4.6c-1.4.7-2 1.6-2 3.4M24 33v1"/></svg><b>Vragen & info</b><span>Wetgeving · gebruik · tips</span></a>
+        <a class="mt" href="#offerte"><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 8h7l3 8-4 3a20 20 0 0 0 9 9l3-4 8 3v7a3 3 0 0 1-3 3A28 28 0 0 1 11 11a3 3 0 0 1 3-3z"/></svg><b>Contact</b><span>WhatsApp · bellen · offerte</span></a>
+      </nav>
+      <div class="mrow">
+        <a class="btn" href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>Offerte via WhatsApp</a><a class="btn alt" href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bel <span class="ph">[telefoonnummer]</span></a>
+        <div class="mlinks"><a href="over-ons/">Over ons</a><a href="werkwijze/">Werkwijze</a><a href="voorwaarden/">Voorwaarden</a><a href="privacy/">Privacy</a></div>
       </div>
     </div>
   </div>
@@ -1324,7 +1359,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     </div>
   </section>
 
-  <section class="block has-cta" id="idee">
+  <section class="block has-cta" id="idee" data-bg="orbit" data-pos="50% 45%">
     <div class="bhead" aria-hidden="true"><small>01</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="17" y="12" width="14" height="30" rx="4"/><path d="M21 12V8h6v4M19 20h10"/></svg></div>
     <div class="rv hd"><div class="kicker">Onder druk</div><h2 class="t">Lachgas Amsterdam voor elke gelegenheid die doorgaat.</h2>
     <p class="lead">Fastgas Service NL is de lachgasleverancier van Amsterdam en omstreken voor horeca, events en elke andere gelegenheid. Een patroon van 8 gram is na één vulling leeg; een Fastgas cilinder van 2000 gram vult zo'n 250 keer. Wisselen doe je na de service, niet tijdens. En raakt hij toch leeg, dan staat onze koerier binnen 20 minuten voor de deur, dag en nacht.</p><figure class="still" aria-hidden="true"><img src="assets/still-cilinder-720.webp" srcset="assets/still-cilinder-720.webp 720w, assets/still-cilinder-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Fastgas · 2000 gram</figcaption></figure></div>
@@ -1336,38 +1371,39 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Vandaag nog nodig?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="product">
+  <section class="block has-cta" id="product" data-bg="earth1" data-pos="50% 50%">
     <div class="bhead" aria-hidden="true"><small>02</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="17" y="20" width="14" height="22" rx="4"/><path d="M21 20v-3h6v3M24 17v-4"/><circle cx="24" cy="9" r="3.5"/><path d="M36 26h4M36 32h4M8 26h4M8 32h4"/></svg></div>
     <div class="split">
-      <div class="rv"><div class="kicker">Het product</div><h2 class="t">Eén cilinder. De hele avond.</h2>
-      <p class="lead">De zwart-gele stalen cilinder voor slagroomspuiten. Eén cilinder vervangt een doos patronen en houdt de druk gelijk van de eerste tot de laatste vulling.</p>
-      <div class="hero-cta"><a class="btn" href="fastgas-tank-2kg/">Alles over de cilinder</a><a class="ghost" href="slagroomspuiten-en-toebehoren/">Past hij op mijn spuit?</a></div></div>
+      <div class="rv"><div class="kicker">Het product</div><h2 class="t">Eén wegwerptank. De hele avond.</h2>
+      <p class="lead">De zwart-gele stalen wegwerptank voor slagroomspuiten: eenmalig gebruik, geen statiegeld, geen hervullen. Eén tank vervangt een doos patronen en houdt de druk gelijk van de eerste tot de laatste vulling.</p>
+      <div class="hero-cta"><a class="btn" href="fastgas-tank-2kg/">Alles over de wegwerptank</a><a class="ghost" href="slagroomspuiten-en-toebehoren/">Past hij op mijn spuit?</a></div></div>
       <dl class="spec rv">
         <div><dt>Inhoud</dt><dd>2000 gram N2O</dd></div>
+        <div><dt>Type</dt><dd>wegwerptank, eenmalig gebruik</dd></div>
         <div><dt>Vullingen</dt><dd>zo'n 250 (patroon van 8 g = 1 vulling)</dd></div>
         <div><dt>Getest op</dt><dd>165 bar</dd></div>
         <div><dt>Ventiel</dt><dd>lekvrij</dd></div>
         <div><dt>Zuiverheid</dt><dd>99,9% N2O</dd></div>
         <div><dt>Aansluiting</dt><dd>drukregelaar voor elke standaard slagroomspuit</dd></div>
-        <div><dt>Materiaal</dt><dd>staal, volledig recyclebaar</dd></div>
+        <div><dt>Materiaal</dt><dd>staal, na gebruik volledig recyclebaar</dd></div>
         <div><dt>Gebruik</dt><dd>elke gelegenheid, 18+</dd></div>
       </dl>
     </div>
     <div class="cta-mini"><span>Prijs per cilinder?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="verschil">
+  <section class="block has-cta" id="verschil" data-bg="earth2" data-pos="55% 50%">
     <div class="bhead" aria-hidden="true"><small>03</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10v30M14 40h20M8 24h32"/><path d="M8 24l6-10 6 10zM28 24l6-10 6 10z"/></svg></div>
     <div class="rv"><div class="kicker">Rekensom</div><h2 class="t">Tot 60 procent minder gaskosten.</h2>
     <p class="lead">Minder wisselen, minder afval, een lagere prijs per gram. Dat is het verschil tussen patronen en één stalen cilinder.</p></div>
     <div class="cols">
       <div class="col rv"><h3>Patronen van 8 gram</h3><ul><li>250 keer wisselen per 2000 gram</li><li>Dozen vol lege patronen</li><li>Hogere prijs per gram</li><li>Wisselen midden in de service</li></ul></div>
-      <div class="col fg rv"><h3>Fastgas 2000 gram</h3><ul><li>Eén keer koppelen</li><li>Eén stalen cilinder, volledig recyclebaar</li><li>Lagere prijs per gram</li><li>Wisselen na de service, nooit tijdens</li></ul></div>
+      <div class="col fg rv"><h3>Fastgas 2000 gram</h3><ul><li>Eén keer koppelen</li><li>Eén stalen wegwerptank, volledig recyclebaar</li><li>Lagere prijs per gram</li><li>Wisselen na de service, nooit tijdens</li></ul></div>
     </div>
     <div class="cta-mini"><span>Weten wat het jou scheelt?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt has-cta" id="rekenhulp">
+  <section class="block alt has-cta" id="rekenhulp" data-bg="europe" data-pos="50% 45%">
     <div class="bhead" aria-hidden="true"><small>04</small><b>Product</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="13" y="8" width="22" height="32" rx="3"/><path d="M18 14h12M18 22h4M24 22h4M18 28h4M24 28h4M30 22v6M18 34h10"/></svg></div>
     <div class="rv"><div class="kicker">Rekenhulp</div><h2 class="t">Hoeveel scheelt het jou?</h2>
     <p class="lead">Schuif naar het aantal vullingen dat je per dag maakt. De rekenhulp laat zien wat dat per maand betekent in patronen, cilinders en wisselmomenten.</p></div>
@@ -1384,19 +1420,19 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Jouw aantal doorgeven?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="werkwijze">
+  <section class="block has-cta" id="werkwijze" data-bg="orbit" data-pos="35% 50%">
     <div class="bhead" aria-hidden="true"><small>05</small><b>Bezorging</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="10" cy="36" r="3"/><circle cx="38" cy="12" r="3"/><path d="M13 34c8-2 8-14 16-16 4-1 6-2 7-4" stroke-dasharray="3 3"/></svg></div>
     <div class="rv hd"><div class="kicker">Zo werkt het</div><h2 class="t">Bestellen. Koerier. Koppelen. Klaar.</h2>
     <p class="lead">Geen account, geen wachtrij. Drie stappen tussen een lege spuit en een avond die doordraait.</p><figure class="still" aria-hidden="true"><img src="assets/still-magazijn-720.webp" srcset="assets/still-magazijn-720.webp 720w, assets/still-magazijn-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Eigen magazijn · regio Amsterdam</figcaption></figure></div>
     <ol class="steps">
       <li class="rv"><small>01</small><b>Bestel</b><p>Per WhatsApp of telefonisch: <span class="ph">[telefoonnummer]</span>. Dag en nacht, ook in het weekend.</p></li>
       <li class="rv"><small>02</small><b>Koerier vertrekt direct</b><p>Uit eigen magazijn, met eigen koeriers. Geen tussenhandel, geen depot ergens anders.</p></li>
-      <li class="rv"><small>03</small><b>Binnen 20 minuten op locatie</b><p>Drukregelaar op je standaard slagroomspuit, koppelen en doorwerken. Lege cilinder geven we mee retour.</p></li>
+      <li class="rv"><small>03</small><b>Binnen 20 minuten op locatie</b><p>Drukregelaar op je standaard slagroomspuit, koppelen en doorwerken. Lege wegwerptank? Geef hem mee aan de koerier voor recycling.</p></li>
     </ol>
     <div class="cta-mini"><span>Nu bestellen?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt has-cta" id="bezorging-info">
+  <section class="block alt has-cta" id="bezorging-info" data-bg="earth1" data-pos="60% 45%">
     <div class="bhead" aria-hidden="true"><small>06</small><b>Bezorging</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 42s-12-11-12-20a12 12 0 0 1 24 0c0 9-12 20-12 20z"/><circle cx="24" cy="22" r="4"/></svg></div>
     <div class="rv hd"><div class="kicker">Bezorging</div><h2 class="t">Drie provincies. Eén belofte.</h2>
     <p class="lead">24 uur per dag, 7 dagen per week, binnen 20 minuten op locatie. Buiten deze plaatsen? Vraag het aan, dan kijken we wat kan.</p><figure class="still" aria-hidden="true"><img src="assets/still-nederland-720.webp" srcset="assets/still-nederland-720.webp 720w, assets/still-nederland-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Noord-Holland · Flevoland · Utrecht</figcaption></figure></div>
@@ -1408,7 +1444,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Buiten deze plaatsen?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="bezorgcheck">
+  <section class="block has-cta" id="bezorgcheck" data-bg="earth2" data-pos="45% 55%">
     <div class="bhead" aria-hidden="true"><small>07</small><b>Bezorging</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="12"/><circle cx="24" cy="24" r="4"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6"/></svg></div>
     <div class="rv"><div class="kicker">Bezorgcheck</div><h2 class="t">Bezorgen we bij jou? Check het in één seconde.</h2>
     <p class="lead">Typ je plaats, wijk of de eerste vier cijfers van je postcode. Je ziet direct of we binnen 20 minuten bij je zijn, met een link naar de pagina van jouw plaats.</p>
@@ -1420,7 +1456,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Liever direct vragen?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="fastgas-amsterdam">
+  <section class="block has-cta" id="fastgas-amsterdam" data-bg="europe" data-pos="55% 50%">
     <div class="bhead" aria-hidden="true"><small>08</small><b>Amsterdam</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 40V22l6-6 6 6v18M20 40V18l6-6 6 6v22M32 40V24l4-4 4 4v16M4 40h40"/></svg></div>
     <div class="rv"><div class="kicker">Fastgas Amsterdam</div><h2 class="t">Fastgas Amsterdam: het merk, de cilinder, de bezorging.</h2>
     <p class="lead">Zoek je "Fastgas Amsterdam" of "lachgas Amsterdam"? Dat is bij ons hetzelfde adres. Fastgas is het merk van de zwart-gele cilinder van 2000 gram; wij zijn de bezorgservice eromheen. Originele, verzegelde Fastgas cilinders, getest op 165 bar, met 99,9 procent zuivere N2O, binnen 20 minuten bezorgd in elk stadsdeel van Amsterdam en in meer dan veertig plaatsen in Noord-Holland, Flevoland en Utrecht.</p>
@@ -1428,7 +1464,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Bestellen in Amsterdam?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="amsterdam">
+  <section class="block has-cta" id="amsterdam" data-bg="orbit" data-pos="60% 50%">
     <div class="bhead" aria-hidden="true"><small>09</small><b>Amsterdam</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M24 8v32M8 24h32M13 13l22 22M35 13L13 35"/></svg></div>
     <div class="rv"><div class="kicker">Lachgas bezorgen Amsterdam</div><h2 class="t">Elk stadsdeel, dezelfde 20 minuten.</h2>
     <p class="lead">Onze koeriers vertrekken direct vanuit het eigen magazijn. Van Centrum tot Noord en van West tot Zuidoost: lachgas Amsterdam bezorgd aan de deur, ook midden in de nacht. Buiten de stad rijden we door naar de regio.</p></div>
@@ -1452,7 +1488,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Koerier nodig in jouw stadsdeel?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt" id="openingstijden">
+  <section class="block alt" id="openingstijden" data-bg="earth1" data-pos="40% 50%">
     <div class="bhead" aria-hidden="true"><small>10</small><b>Amsterdam</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="15"/><path d="M24 14v10l6 4"/></svg></div>
     <div class="split">
       <div class="rv"><div class="kicker">Openingstijden</div><h2 class="t">Elke dag. Elk uur.</h2>
@@ -1473,7 +1509,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     </div>
   </section>
 
-  <section class="block has-cta" id="waarom">
+  <section class="block has-cta" id="waarom" data-bg="earth2" data-pos="50% 40%">
     <div class="bhead" aria-hidden="true"><small>11</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l5.5 11 12 1.8-8.7 8.5 2 12L24 33.6 13.2 39.3l2-12L6.5 18.8l12-1.8z"/></svg></div>
     <div class="rv"><div class="kicker">Waarom Fastgas Service NL</div><h2 class="t">Acht redenen om voor ons te kiezen.</h2></div>
     <ol class="reasons">
@@ -1484,12 +1520,12 @@ main > #bestellen{content-visibility:visible;contain:none}
       <li class="rv"><b>Bestellen zoals jij wilt</b><span>Telefoon of WhatsApp: <span class="ph">[telefoonnummer]</span>.</span></li>
       <li class="rv"><b>Betalen bij levering</b><span>Pin of contant aan de deur, of op factuur voor bedrijven <span class="ph">[bevestigen]</span>.</span></li>
       <li class="rv"><b>Elke gelegenheid</b><span>Horeca, events, catering en elke andere gelegenheid, 18+. Zo houden we het legaal en betrouwbaar.</span></li>
-      <li class="rv"><b>Retour en recycling</b><span>Lege stalen cilinders nemen we mee terug.</span></li>
+      <li class="rv"><b>Wegwerptank, geen gedoe</b><span>Eenmalig gebruik: de lege tank geef je mee aan de koerier of breng je naar het oud ijzer.</span></li>
     </ol>
     <div class="cta-mini"><span>Overtuigd?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt" id="veilig">
+  <section class="block alt" id="veilig" data-bg="europe" data-pos="45% 55%">
     <div class="bhead" aria-hidden="true"><small>12</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l14 5v12c0 9-6 15-14 19-8-4-14-10-14-19V11z"/><path d="M17 24l5 5 9-10"/></svg></div>
     <div class="split">
       <div class="rv"><div class="kicker">Veilig bewaren</div><h2 class="t">Zo bewaar je een cilinder.</h2>
@@ -1507,7 +1543,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     </div>
   </section>
 
-  <section class="block alt has-cta" id="voorwie">
+  <section class="block alt has-cta" id="voorwie" data-bg="orbit" data-pos="45% 40%">
     <div class="bhead" aria-hidden="true"><small>13</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 24a7 7 0 0 1 2-13 8 8 0 0 1 16 0 7 7 0 0 1 2 13v14H14z"/><path d="M14 32h20"/></svg></div>
     <div class="rv"><div class="kicker">Voor wie</div><h2 class="t">Gelegenheden die doorgaan.</h2>
     <p class="lead">Overal waar slagroom, espuma en mousse de hele service doorgaan. Zakelijk, op factuur, met een vast ritme als je dat wilt.</p></div>
@@ -1522,7 +1558,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Vast ritme afspreken?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="kwaliteit">
+  <section class="block has-cta" id="kwaliteit" data-bg="earth1" data-pos="55% 55%">
     <div class="bhead" aria-hidden="true"><small>14</small><b>Waarom wij</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 32a16 16 0 0 1 32 0"/><path d="M24 32l8-10"/><circle cx="24" cy="32" r="2"/><path d="M8 32h4M36 32h4"/></svg></div>
     <div class="rv hd"><div class="kicker">Kwaliteit en veiligheid</div><h2 class="t">Elke cilinder getest. Elke levering op tijd.</h2>
     <p class="lead">We leveren alleen cilinders die door de test zijn gekomen. Dat is geen marketing, dat is de voorwaarde om dit werk te mogen doen.</p><figure class="still" aria-hidden="true"><img src="assets/still-onderdelen-720.webp" srcset="assets/still-onderdelen-720.webp 720w, assets/still-onderdelen-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Ventiel · drukregelaar · stalen mantel</figcaption></figure></div>
@@ -1530,13 +1566,13 @@ main > #bestellen{content-visibility:visible;contain:none}
       <div class="stat rv"><div class="u">165 bar</div><div class="d">Elke cilinder getest voordat hij het magazijn verlaat.</div></div>
       <div class="stat rv"><div class="u">Lekvrij ventiel</div><div class="d">Dubbele afdichting op de koppeling, geen drukverlies in opslag.</div></div>
       <div class="stat rv"><div class="u">Elke gelegenheid</div><div class="d">Horeca, events en elke gelegenheid. 18+, niet voor recreatief gebruik.</div></div>
-      <div class="stat rv"><div class="u">Retour en recycling</div><div class="d">Lege stalen cilinders nemen we mee terug of gaan naar het oud ijzer.</div></div>
+      <div class="stat rv"><div class="u">Wegwerptank</div><div class="d">Eenmalig gebruik, stalen mantel. Na gebruik meegeven aan de koerier of naar het oud ijzer.</div></div>
     </div>
     <div class="hero-cta rv"><a class="ghost" href="veilig-gebruik-lachgas/">Veilig gebruik</a><a class="ghost" href="lachgas-wetgeving/">Wat zegt de wet sinds 2023?</a></div>
     <div class="cta-mini"><span>Vragen over de cilinder?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="diensten">
+  <section class="block has-cta" id="diensten" data-bg="earth2" data-pos="60% 45%">
     <div class="bhead" aria-hidden="true"><small>15</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><rect x="27" y="8" width="13" height="13" rx="2"/><rect x="8" y="27" width="13" height="13" rx="2"/><rect x="27" y="27" width="13" height="13" rx="2"/></svg></div>
     <div class="rv"><div class="kicker">Index</div><h2 class="t">Alles over Fastgas, per onderwerp.</h2>
     <p class="lead">Van bestellen tot wetgeving: elke vraag heeft een eigen pagina. Kort, concreet en geschreven voor professionals.</p></div>
@@ -1553,7 +1589,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Snel antwoord nodig?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt has-cta" id="plaatsen">
+  <section class="block alt has-cta" id="plaatsen" data-bg="europe" data-pos="50% 50%">
     <div class="bhead" aria-hidden="true"><small>16</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M16 34s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13z"/><circle cx="16" cy="21" r="2.5"/><path d="M34 26s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10z"/><circle cx="34" cy="16" r="2"/><path d="M8 40h32"/></svg></div>
     <div class="rv hd"><div class="kicker">Bezorgplaatsen</div><h2 class="t">Meer dan vijftig plaatsen. Dezelfde 20 minuten.</h2>
     <p class="lead">Elke plaats heeft een eigen pagina met bezorgtijd, wijken en contact. Staat jouw plaats er niet bij? Vraag het aan.</p><figure class="still" aria-hidden="true"><img src="assets/still-aarde-720.webp" srcset="assets/still-aarde-720.webp 720w, assets/still-aarde-1400.webp 1400w" sizes="(min-width:1000px) 34vw, 1px" width="1400" height="788" alt="" loading="lazy" decoding="async"><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i><figcaption>// Bezorggebied · 24/7</figcaption></figure></div>
@@ -1565,7 +1601,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="cta-mini"><span>Jouw plaats er niet bij?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block has-cta" id="faq">
+  <section class="block has-cta" id="faq" data-bg="orbit" data-pos="50% 55%">
     <div class="bhead" aria-hidden="true"><small>17</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M19 19a5 5 0 1 1 7 4.6c-1.4.7-2 1.6-2 3.4M24 33v1"/></svg></div>
     <div class="rv"><div class="kicker">Vragen</div><h2 class="t">Wat klanten ons vragen.</h2></div>
     <div class="faq rv">
@@ -1580,12 +1616,12 @@ main > #bestellen{content-visibility:visible;contain:none}
       <details><summary>Hoe snel is lachgas bezorgen in Amsterdam echt?</summary><p>Gemiddeld binnen 20 minuten na je bestelling, omdat de koerier direct vanuit ons eigen magazijn vertrekt. Dat geldt overdag én 's nachts.</p></details>
       <details><summary>Zijn jullie ook 's nachts en op feestdagen bereikbaar?</summary><p>Ja. 24 uur per dag, 7 dagen per week, het hele jaar. Ook met Koningsdag, Kerst en Oud en Nieuw.</p></details>
       <details><summary>Hoe kan ik betalen?</summary><p>Bij levering met pin of contant, of op factuur voor bedrijven <span class="ph">[bevestigen]</span>. Vermeld je bedrijfsnaam bij de bestelling.</p></details>
-      <details><summary>Wat doe ik met een lege cilinder?</summary><p>Geef hem mee aan de koerier bij de volgende levering of breng hem naar het oud ijzer. De cilinder is van staal en volledig recyclebaar.</p></details>
+      <details><summary>Wat doe ik met een lege tank?</summary><p>De Fastgas tank is een wegwerptank: hervullen is niet mogelijk en niet nodig. Geef de lege tank mee aan de koerier bij de volgende levering of breng hem naar het oud ijzer; hij is van staal en volledig recyclebaar.</p></details>
     </div>
     <div class="cta-mini"><span>Andere vraag?</span><a href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>WhatsApp</a><a href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bellen</a></div>
   </section>
 
-  <section class="block alt" id="over">
+  <section class="block alt" id="over" data-bg="earth1" data-pos="45% 45%">
     <div class="bhead" aria-hidden="true"><small>18</small><b>Informatie</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40V18l18-10 18 10v22M12 40V26h24v14M18 40v-8h12v8"/></svg></div>
     <div class="split">
       <div class="rv"><div class="kicker">Over ons</div><h2 class="t">Fastgas Service NL.</h2>
@@ -1605,7 +1641,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     </div>
   </section>
 
-  <section class="block cta-close" id="bestellen">
+  <section class="block cta-close" id="bestellen" data-bg="earth2" data-pos="50% 50%">
     <img class="bgstill" src="assets/still-magazijn-720.webp" srcset="assets/still-magazijn-720.webp 720w, assets/still-magazijn-1400.webp 1400w" sizes="100vw" width="1400" height="788" alt="" loading="lazy" decoding="async">
     <div class="bhead" aria-hidden="true"><small>19</small><b>Contact</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32v22H20l-8 6v-6H8z"/><path d="M15 18h18M15 24h11"/></svg></div>
     <div class="ticker rev" aria-hidden="true"><div class="tk"><span>Binnen 20 minuten op locatie</span><span>24 uur per dag, 7 dagen per week</span><span>Noord-Holland · Flevoland · Utrecht</span><span>Eén cilinder, zo'n 250 vullingen</span><span>Getest op 165 bar</span><span>Bezorgd voordat de gasten het merken</span><span>Snel geregeld. Goed geregeld.</span><span>Voor elke gelegenheid</span><span>Eigen magazijn, eigen koeriers</span></div></div>
@@ -1614,7 +1650,7 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="hero-cta"><a class="btn" href="#" data-ph="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3 4.4c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.4 2.5 1 3 .8 3.5.7.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3l-2-1c-.3-.1-.5-.2-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5v-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5H9z"/></svg>Offerte via WhatsApp</a><a class="btn alt" href="#" data-ph="tel"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>Bel <span class="ph">[telefoonnummer]</span></a></div></div>
   </section>
 
-  <section class="offerte" id="offerte">
+  <section class="offerte" id="offerte" data-bg="europe" data-pos="55% 45%">
     <div class="wrap">
     <div class="bhead" aria-hidden="true"><small>20</small><b>Contact</b><i></i><svg class="pict" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 8h7l3 8-4 3a20 20 0 0 0 9 9l3-4 8 3v7a3 3 0 0 1-3 3A28 28 0 0 1 11 11a3 3 0 0 1 3-3z"/></svg></div>
       <div class="rv"><div class="kicker">Offerte</div><h2 class="t">Klaar om door te gaan?</h2>
@@ -1636,6 +1672,8 @@ main > #bestellen{content-visibility:visible;contain:none}
     <div class="legal"><span>© 2026 Fastgas Service NL</span><span>Levering aan horeca, events, catering en alle andere gelegenheden, 18+. Sinds 1 januari 2023 staat lachgas op lijst II van de Opiumwet; verkoop en bezit voor recreatief gebruik zijn verboden.</span></div>
   </footer>
 </main>
+
+<div class="space" id="space" aria-hidden="true"><img class="sp a" alt="" decoding="async"><img class="sp b" alt="" decoding="async"><div class="veil"></div></div>
 
 <div class="fab" id="fab">
   <div class="fab-menu" id="fabMenu" aria-hidden="true">
@@ -1957,12 +1995,23 @@ window.__pageScene=pageScene;
 
 /* ---------- Below the journey: reveal on scroll, counters, safety stripe, offerte form (JS-only success; DEPLOY STEP: connect to mail or a form service) ---------- */
 const countUp=el=>{ const end=+el.dataset.count, t0=performance.now(), dur=1400; const step=now=>{ const t=clamp((now-t0)/dur,0,1), e=1-Math.pow(1-t,3); el.textContent=String(Math.round(end*e)); if(t<1)requestAnimationFrame(step); }; requestAnimationFrame(step); };
+/* v39: space behind the blocks: two image layers crossfade per block; the next block's image is preloaded */
+const space=document.getElementById('space'), spA=space?space.querySelector('.sp.a'):null, spB=space?space.querySelector('.sp.b'):null; let spCur='', spActive=null; const spCache={};
+function spSrc(name){ const w=Math.round(Math.max(innerWidth,innerHeight)*Math.min(2,devicePixelRatio||1)); return 'assets/space-'+name+(w>1500?'-2560':'-1440')+'.webp'; }
+function preloadSpace(name){ if(!name||spCache[name])return; const i=new Image(); i.src=spSrc(name); spCache[name]=i; }
+function spaceTo(b){ if(!space||!b.dataset.bg)return; const name=b.dataset.bg; const next=spActive===spA?spB:spA;
+  if(name!==spCur){ spCur=name; next.style.setProperty('--pos',b.dataset.pos||'50% 50%'); next.src=spSrc(name);
+    const show=()=>{ if(spCur!==name)return; next.classList.add('on'); if(spActive&&spActive!==next)spActive.classList.remove('on'); spActive=next; };
+    if(next.complete&&next.naturalWidth)show(); else next.addEventListener('load',show,{once:true}); }
+  else if(spActive){ spActive.style.setProperty('--pos',b.dataset.pos||'50% 50%'); }
+  const nb=b.nextElementSibling; if(nb&&nb.dataset&&nb.dataset.bg)preloadSpace(nb.dataset.bg); }
+setTimeout(()=>{ const first=document.querySelector('main > section[data-bg]'); if(first){ preloadSpace(first.dataset.bg); const s=first.nextElementSibling; if(s&&s.dataset.bg)preloadSpace(s.dataset.bg); } },4500);
 /* v37: one coordinated reveal per block (kicker, title, lead, then the items in order), replayed when a block comes back */
 const blocks=Array.from(document.querySelectorAll('main > section:not(#hero)'));
 blocks.forEach(b=>b.querySelectorAll('.rv').forEach((el,i)=>el.style.setProperty('--i',i)));
 const setNum=el=>{ el.querySelectorAll('[data-count]').forEach(reduce.matches?(x=>x.textContent=String(+x.dataset.count)):countUp); };
 const blockIO=new IntersectionObserver(es=>{ for(const e of es){ const b=e.target;
-  if(e.intersectionRatio>=0.2&&!b.classList.contains('in')){ b.classList.add('in'); b.querySelectorAll('.rv').forEach(el=>el.classList.add('in')); b.querySelectorAll('.kicker').forEach(decode); setNum(b); }
+  if(e.intersectionRatio>=0.2&&!b.classList.contains('in')){ b.classList.add('in'); spaceTo(b); b.querySelectorAll('.rv').forEach(el=>el.classList.add('in')); b.querySelectorAll('.kicker').forEach(decode); setNum(b); }
   else if(!e.isIntersecting&&b.classList.contains('in')&&!reduce.matches){ b.classList.remove('in'); b.querySelectorAll('.rv').forEach(el=>el.classList.remove('in')); b.querySelectorAll('.kicker').forEach(k=>{ delete k.dataset.decoded; k.textContent=k.dataset.text||k.textContent; }); }
 } },{threshold:[0,0.2]});
 blocks.forEach(b=>blockIO.observe(b));
