@@ -1925,17 +1925,17 @@ let pageAnim=null, cooldownUntil=0, lastWheelT=0, lastWheelD=0, touchY=null, tou
 function nearestRestIndex(ps){ let b=0,bd=9; for(let i=0;i<restPs.length;i++){ const d=Math.abs(restPs[i]-ps); if(d<bd){bd=d;b=i} } return b; }
 function glide(y1,dur){
   cancelSettle(); const y0=scrollY; if(Math.abs(y1-y0)<2)return;
-  const t0=performance.now(), ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; const st={raf:0}; pageAnim=st;
+  /* v38b */ const t0=performance.now(), ease=t=>-(Math.cos(Math.PI*t)-1)/2; const st={raf:0}; pageAnim=st;
   const step=now=>{ if(pageAnim!==st)return; const t=clamp((now-t0)/dur,0,1); scrollTo(0,Math.round(y0+(y1-y0)*ease(t)));
-    if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; cooldownUntil=performance.now()+340; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')); } };
+    if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; cooldownUntil=performance.now()+650; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')); } };
   st.raf=requestAnimationFrame(step);
 }
 function pageScene(dir){
   const ps=progress(); const cur=nearestRestIndex(ps); let i=cur;
   if(dir>0&&restPs[i]<=ps+0.002)i++; else if(dir<0&&restPs[i]>=ps-0.002)i--;
-  if(i>=restPs.length){ glide(Math.round(hero.offsetTop+range+stage.clientHeight),1150); return true; }   /* out of the journey, into the first block */
+  if(i>=restPs.length){ glide(Math.round(hero.offsetTop+range+stage.clientHeight),1900); return true; }   /* out of the journey, into the first block */
   if(i<0)return false;
-  const dt=Math.abs(RESTS[i].t-RESTS[cur].t)||2; glide(Math.round(hero.offsetTop+restPs[i]*range),clamp(dt*230,650,1600)); return true;
+  const dt=Math.abs(RESTS[i].t-RESTS[cur].t)||2; glide(Math.round(hero.offsetTop+restPs[i]*range),clamp(dt*480,1500,3400)); return true;
 }
 function pagingActive(dir){
   if(reduce.matches||!heroOnScreen)return false; const b=document.body.classList; if(b.contains('intro-lock')||b.contains('menu-open'))return false;
