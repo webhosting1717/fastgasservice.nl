@@ -1161,6 +1161,7 @@ section.block.alt > .cta-mini{padding-left:0;padding-right:0;width:auto;max-widt
 /* the closing block paints edge to edge (content-visibility would clip its full-width still and ticker to the column) */
 main > #bestellen{content-visibility:visible;contain:none}
 @media (max-width:720px){#bestellen .ticker{display:none}}
+/* v38c */
 </style>
 </head>
 <body>
@@ -1672,7 +1673,7 @@ if(intro){
     const fontsReady=(document.fonts&&document.fonts.load)?Promise.race([document.fonts.load('800 1em "Barlow Condensed"'),new Promise(r=>setTimeout(r,900))]):Promise.resolve();
     fontsReady.then(()=>{ document.body.classList.add('fonts');
       const typeLine=(el,delay,speed)=>{ const text=el.dataset.text||''; let c=0; const t=()=>{ c++; el.innerHTML=text.slice(0,c).replace(/(24\/7|20 minuten)/g,'<b>$1</b>'); if(c<text.length)setTimeout(t,speed+Math.random()*speed); else el.classList.add('done'); }; setTimeout(t,delay); };
-      typeLine(document.getElementById('hudTop'),900,14); typeLine(document.getElementById('hudMid'),1500,22);
+      typeLine(document.getElementById('hudTop'),700,13); typeLine(document.getElementById('hudMid'),1250,20);
       const exitIntro=()=>{
         const mark=intro.querySelector('.intro-mark'), hdr=document.getElementById('hdrMark');
         intro.classList.add('out');
@@ -1688,7 +1689,7 @@ if(intro){
           if(anim&&anim.finished) anim.finished.then(land,land); setTimeout(land,1250);
         }; requestAnimationFrame(()=>requestAnimationFrame(go)); setTimeout(go,120); setTimeout(land,1500);
         setTimeout(()=>intro.remove(),1800); };
-      const t0=performance.now(); const waitLive=()=>{ const ready=stage.classList.contains('live')||loadFrac>=0.999; const dt=performance.now()-t0; if((ready&&dt>=3300)||dt>=6200){ if(loader){loader.style.setProperty('--p','1');introLine.style.setProperty('--p','1');} setTimeout(exitIntro,ready?250:0); } else setTimeout(waitLive,100); }; waitLive(); });
+      const t0=performance.now(); const waitLive=()=>{ const ready=stage.classList.contains('live')||loadFrac>=0.999; const dt=performance.now()-t0; if((ready&&dt>=2900)||dt>=5600){ if(loader){loader.style.setProperty('--p','1');introLine.style.setProperty('--p','1');} setTimeout(exitIntro,ready?250:0); } else setTimeout(waitLive,100); }; waitLive(); });
   }
 } else finishIntro();
 
@@ -1815,7 +1816,7 @@ async function initVideo(){
 const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
 const blobs=new Array(FRAME_COUNT), decoded=new Map(), pending=new Set();
 let framesInit=false, loadedCount=0, cw=0, ch=0, dpr=1, lastKey='', lastDir=1, inflight=0, lastF=0, winLo=0, winHi=0;
-const MAX_INFLIGHT=3, WIN_AHEAD=10, WIN_BACK=4;   /* 15 decoded frames at most: about 150 MB at 1080x2336, half that for 720 px frames */
+let MAX_INFLIGHT=3, WIN_AHEAD=10, WIN_BACK=4, gliding=false;   /* 15 decoded frames at most: about 150 MB at 1080x2336, half that for 720 px frames */
 function sizeCanvas(){
   dpr=Math.min(3,devicePixelRatio||1); const w=stage.clientWidth, h=stage.clientHeight;
   if(w===cw&&h===ch)return; cw=w; ch=h; canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr); lastKey=''; try{ctx.imageSmoothingQuality=(dpr>=2&&w*dpr<=1300)?'medium':'high'}catch(e){}
@@ -1850,7 +1851,7 @@ function drawFrame(p){
   ensureWindow(f);
   const d0=decoded.get(i0), d1=decoded.get(i1);
   let key;
-  if(d0&&d1&&a>0.02&&a<0.98){ key=i0+':'+Math.round(a*48); if(key===lastKey)return; drawCover(d0); ctx.globalAlpha=a; drawCover(d1); ctx.globalAlpha=1; stats.blends++; }
+  if(!gliding&&d0&&d1&&a>0.02&&a<0.98){ key=i0+':'+Math.round(a*48); if(key===lastKey)return; drawCover(d0); ctx.globalAlpha=a; drawCover(d1); ctx.globalAlpha=1; stats.blends++; }
   else { let i=a<0.5?i0:i1; let d=decoded.get(i)||decoded.get(a<0.5?i1:i0); if(!d){const n=nearestDecoded(i); if(n===null)return; d=decoded.get(n); i=n; stats.misses++;} key='s'+i; if(key===lastKey)return; drawCover(d); }
   lastKey=key; stats.draws++;
   if(!stage.classList.contains('live')&&mode==='frames')stage.classList.add('live');
@@ -1870,7 +1871,7 @@ async function initFrames(){
     const idx=pick(); if(idx<0)return; requested.add(idx);
     fetch(frameSrc(idx)).then(r=>{ if(!r.ok)throw new Error(r.status); return r.blob(); }).then(b=>{ blobs[idx]=b; if(mode==='frames'){ensureWindow(lastF); if(idx>=winLo&&idx<=winHi){needsDraw=true;wake()}} done(); }, ()=>{ setTimeout(()=>{requested.delete(idx);pump()},1500); done(); });
   };
-  for(let k=0;k<4;k++)pump();   /* four parallel streams under the browser's per-host limit */
+  for(let k=0;k<6;k++)pump();   /* four parallel streams under the browser's per-host limit */
 }
 
 /* ---------- Mode, decided live on rotate, resize and preference change ---------- */
@@ -1922,12 +1923,15 @@ addEventListener('touchcancel',()=>{ touching=false; armSettle(); },{passive:tru
 
 /* ---------- v38: scene paging: one wheel tick / swipe / key = one scene; the footage plays the transition ---------- */
 let pageAnim=null, cooldownUntil=0, lastWheelT=0, lastWheelD=0, touchY=null, touchDone=false;
+/* cubic-bezier(.3,.1,.7,.98): soft start, floating middle, subtle brake at the end */
+const bezierEase=(()=>{ const x1=.3,y1=.1,x2=.7,y2=.98; const A=(a,b)=>1-3*b+3*a, B=(a,b)=>3*b-6*a, C=a=>3*a; const calc=(t,a,b)=>((A(a,b)*t+B(a,b))*t+C(a))*t; const slope=(t,a,b)=>3*A(a,b)*t*t+2*B(a,b)*t+C(a);
+  return x=>{ if(x<=0)return 0; if(x>=1)return 1; let t=x; for(let i=0;i<8;i++){ const s=slope(t,x1,x2); if(Math.abs(s)<1e-6)break; t-=(calc(t,x1,x2)-x)/s; } return calc(t,y1,y2); }; })();
 function nearestRestIndex(ps){ let b=0,bd=9; for(let i=0;i<restPs.length;i++){ const d=Math.abs(restPs[i]-ps); if(d<bd){bd=d;b=i} } return b; }
 function glide(y1,dur){
   cancelSettle(); const y0=scrollY; if(Math.abs(y1-y0)<2)return;
-  /* v38b */ const t0=performance.now(), ease=t=>-(Math.cos(Math.PI*t)-1)/2; const st={raf:0}; pageAnim=st;
+  /* v38b */ /* v38c */ const t0=performance.now(), ease=bezierEase; const st={raf:0}; pageAnim=st; gliding=true; WIN_AHEAD=16; WIN_BACK=2; MAX_INFLIGHT=4;
   const step=now=>{ if(pageAnim!==st)return; const t=clamp((now-t0)/dur,0,1); scrollTo(0,Math.round(y0+(y1-y0)*ease(t)));
-    if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; cooldownUntil=performance.now()+650; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')); } };
+    if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; gliding=false; WIN_AHEAD=10; WIN_BACK=4; MAX_INFLIGHT=3; cooldownUntil=performance.now()+650; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')); } };
   st.raf=requestAnimationFrame(step);
 }
 function pageScene(dir){
@@ -1935,7 +1939,7 @@ function pageScene(dir){
   if(dir>0&&restPs[i]<=ps+0.002)i++; else if(dir<0&&restPs[i]>=ps-0.002)i--;
   if(i>=restPs.length){ glide(Math.round(hero.offsetTop+range+stage.clientHeight),1900); return true; }   /* out of the journey, into the first block */
   if(i<0)return false;
-  const dt=Math.abs(RESTS[i].t-RESTS[cur].t)||2; glide(Math.round(hero.offsetTop+restPs[i]*range),clamp(dt*480,1500,3400)); return true;
+  const dt=Math.abs(RESTS[i].t-RESTS[cur].t)||2; glide(Math.round(hero.offsetTop+restPs[i]*range),clamp(dt*440,1400,3000)); return true;
 }
 function pagingActive(dir){
   if(reduce.matches||!heroOnScreen)return false; const b=document.body.classList; if(b.contains('intro-lock')||b.contains('menu-open'))return false;
