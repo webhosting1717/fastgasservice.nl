@@ -293,7 +293,7 @@ function nearestRestIndex(ps){ let b=0,bd=9; for(let i=0;i<restPs.length;i++){ c
 function glide(y1,dur){
   cancelSettle(); const y0=scrollY; if(Math.abs(y1-y0)<2)return;
   if(mode==='frames'){ prioritiseFrames(clamp((y0-heroTop)/range,0,1),clamp((y1-heroTop)/range,0,1)); openFull(); }
-  /* v38b */ /* v38c */ const t0=performance.now(), ease=bezierEase; const st={raf:0}; pageAnim=st; gliding=true; WIN_AHEAD=16; WIN_BACK=2; MAX_INFLIGHT=4;
+  /* v38b */ /* v38c */ /* v42 */ document.documentElement.classList.remove('snap'); const t0=performance.now(), ease=bezierEase; const st={raf:0}; pageAnim=st; gliding=true; WIN_AHEAD=16; WIN_BACK=2; MAX_INFLIGHT=4;
   const step=now=>{ if(pageAnim!==st)return; const t=clamp((now-t0)/dur,0,1); scrollTo(0,Math.round(y0+(y1-y0)*ease(t)));
     if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; gliding=false; WIN_AHEAD=10; WIN_BACK=4; MAX_INFLIGHT=3; cooldownUntil=performance.now()+650; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')); } };
   st.raf=requestAnimationFrame(step);
@@ -309,14 +309,34 @@ function pagingActive(dir){
   if(reduce.matches||!heroOnScreen)return false; const b=document.body.classList; if(b.contains('intro-lock')||b.contains('menu-open'))return false;
   const ps=progress(); if(ps>=1&&dir>0)return false; if(ps<=0&&dir<0)return false; return true;
 }
-addEventListener('wheel',e=>{ const dir=e.deltaY>0?1:e.deltaY<0?-1:0; if(!dir||e.ctrlKey||!pagingActive(dir))return; e.preventDefault();
-  const now=performance.now(), d=Math.abs(e.deltaY); const accel=d>lastWheelD*1.05||now-lastWheelT>220; lastWheelT=now; lastWheelD=d;
-  if(pageAnim||now<cooldownUntil||!accel||d<6)return; pageScene(dir); },{passive:false});
+/* v42: blocks page per wheel tick on desktop; the hero end and the first block hand over to each other */
+const finePointer=matchMedia('(pointer:fine)');
+let blockAnim=0, blockList=null;
+function currentBlockIndex(){ const secs=blockList||(blockList=Array.from(document.querySelectorAll('main > section:not(#hero)'))); let best=-1,bd=1e9; for(let i=0;i<secs.length;i++){ const d=Math.abs(secs[i].getBoundingClientRect().top); if(d<bd){bd=d;best=i} } return bd<innerHeight*0.5?best:-1; }
+function pageBlock(dir){
+  const i=currentBlockIndex(); if(i<0)return false;
+  const b=document.body.classList; if(b.contains('menu-open')||reduce.matches)return false;
+  if(dir<0&&i===0){ return pageScene(-1); }
+  const target=dir>0?blockList[i+1]:blockList[i-1];
+  const y=target?Math.round(scrollY+target.getBoundingClientRect().top):(dir>0?document.documentElement.scrollHeight-innerHeight:null);
+  if(y===null||Math.abs(y-scrollY)<2)return false;
+  blockAnim=performance.now()+700; cooldownUntil=blockAnim; scrollTo({top:y,behavior:'smooth'}); return true;
+}
+addEventListener('wheel',e=>{ const dir=e.deltaY>0?1:e.deltaY<0?-1:0; if(!dir||e.ctrlKey)return;
+  const now=performance.now(), d=Math.abs(e.deltaY); const accel=d>lastWheelD*1.05||now-lastWheelT>220; lastWheelT=now; lastWheelD=d; /* v42b: also tracked while swallowing, so an inertia tail is never mistaken for a new gesture */
+  if(pageAnim||now<cooldownUntil){ e.preventDefault(); return; }               /* a glide or its inertia tail: swallow */
+  if(pagingActive(dir)){ e.preventDefault(); if(!accel||d<6)return; pageScene(dir); return; }
+  if(finePointer.matches&&document.body.classList.contains('scrolled-page')){ const i=currentBlockIndex(); if(i>=0){ e.preventDefault(); if(!accel||d<6)return; pageBlock(dir); } }
+},{passive:false});
 addEventListener('touchstart',e=>{ if(mode==='frames'&&heroOnScreen)openFull(); if(e.touches.length!==1){touchY=null;return} touchY=e.touches[0].clientY; touchDone=false; },{passive:true});
-document.addEventListener('touchmove',e=>{ if(touchY===null||e.touches.length!==1)return; const dy=touchY-e.touches[0].clientY; const dir=dy>0?1:-1; if(!pagingActive(dir))return; e.preventDefault();
-  if(touchDone||pageAnim||Math.abs(dy)<22)return; touchDone=true; pageScene(dir); },{passive:false});
+document.addEventListener('touchmove',e=>{ if(pageAnim){ e.preventDefault(); return; } if(touchY===null||e.touches.length!==1)return; const dy=touchY-e.touches[0].clientY; const dir=dy>0?1:-1; if(!pagingActive(dir))return; e.preventDefault();
+  if(touchDone||Math.abs(dy)<22)return; touchDone=true; pageScene(dir); },{passive:false});
 addEventListener('touchend',()=>{ touchY=null; },{passive:true});
-addEventListener('keydown',e=>{ if(e.target&&(e.target.matches('input,textarea,select,button,a')||e.target.isContentEditable))return; const k=e.key; const dir=(k==='ArrowDown'||k==='PageDown'||k===' ')?1:(k==='ArrowUp'||k==='PageUp')?-1:0; if(!dir||!pagingActive(dir))return; e.preventDefault(); if(pageAnim)return; pageScene(dir); });
+addEventListener('keydown',e=>{ if(e.target&&(e.target.matches('input,textarea,select,button,a')||e.target.isContentEditable))return; const k=e.key; const dir=(k==='ArrowDown'||k==='PageDown'||k===' ')?1:(k==='ArrowUp'||k==='PageUp')?-1:0; if(!dir)return;
+  if(pageAnim||performance.now()<cooldownUntil){ e.preventDefault(); return; }
+  if(pagingActive(dir)){ e.preventDefault(); pageScene(dir); return; }
+  if(document.body.classList.contains('scrolled-page')&&currentBlockIndex()>=0){ e.preventDefault(); pageBlock(dir); } });
+/* v42 */
 window.__pageScene=pageScene;
 
 /* v41c: deferred start-up tasks */
