@@ -1226,6 +1226,8 @@ footer{content-visibility:auto;contain-intrinsic-size:auto 640px}
 #idee{content-visibility:visible;contain:none}
 /* v43 */
 @media (pointer:coarse){.space .sp{filter:none;transition:opacity 1.2s ease}.space .sp.on{transform:none}.space .veil{background:linear-gradient(180deg,rgba(5,8,15,.72),rgba(5,8,15,.5) 45%,rgba(5,8,15,.8))}}
+/* v44 */
+@media ((max-width:720px) and (orientation:portrait)),((orientation:portrait) and (pointer:coarse)){.stage .cue{display:none}}
 </style>
 </head>
 <body>
@@ -1288,7 +1290,7 @@ footer{content-visibility:auto;contain-intrinsic-size:auto 640px}
         <div class="tele"><span id="teleScene">SCN 01/06</span><span id="teleName">Aanrijden</span><span id="teleTime">T+00.0S</span><span id="telePct">000%</span><span class="live"><i></i>LIVE</span></div>
       </div>
 
-      <div class="band left" data-a="0.03" data-b="0.125" data-cta>
+      <div class="band left" data-a="0" data-b="0.125" data-first data-cta>
         <div class="scrim"></div>
         <div class="kicker l1">Lachgas Amsterdam · 24/7</div>
         <h1 class="l2">Lachgas Amsterdam.<br>Binnen 20 minuten op locatie.</h1>

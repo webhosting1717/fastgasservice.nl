@@ -75,15 +75,15 @@ function onScroll(){ if(!stage.classList.contains('scrolled')&&scrollY>heroTop+r
 new IntersectionObserver(e=>{heroOnScreen=e[0].isIntersecting;if(heroOnScreen)wake()},{threshold:0}).observe(hero);
 addEventListener('scroll',onScroll,{passive:true});
 addEventListener('pageshow',e=>{if(e.persisted){measure();target=shown=progress();wake()}});
-const CHNAMES=['Aanrijden','Binnenkant','Terug in de rij','Uit het magazijn','Naar Nederland','Bezorggebied'];
+const CHNAMES=['Aanrijden','Binnenkant','Onderdelen','Terug in de rij','Uit het magazijn','Naar Nederland','Bezorggebied']; /* v44 */
 const rail=document.getElementById('rail'), teleName=document.getElementById('teleName'), teleScene=document.getElementById('teleScene'), teleTime=document.getElementById('teleTime'), telePct=document.getElementById('telePct');
 let teleAt=0, teleLast='';
-const SCENES=[0,0.13,0.232,0.44,0.58,0.875];
+const SCENES=[0,0.13,0.232,0.315,0.44,0.58,0.875];
 function telemetry(p,now){
   const rp=Math.round(p*1000)/10; if(rp!==lastBar){lastBar=rp;rail.style.setProperty('--rp',rp+'%')}
   if(now-teleAt<100)return; teleAt=now;
   let sc=1; for(let i=0;i<SCENES.length;i++) if(p>=SCENES[i]) sc=i+1;
-  const s='SCN 0'+sc+'/06|T+'+(p*VIDEO_DURATION).toFixed(1).padStart(4,'0')+'S|'+String(Math.round(p*100)).padStart(3,'0')+'%';
+  const s='SCN 0'+sc+'/07|T+'+(p*VIDEO_DURATION).toFixed(1).padStart(4,'0')+'S|'+String(Math.round(p*100)).padStart(3,'0')+'%';
   if(s===teleLast)return; teleLast=s; const parts=s.split('|'); teleScene.textContent=parts[0]; teleTime.textContent=parts[1]; telePct.textContent=parts[2]; if(teleName.dataset.text!==CHNAMES[sc-1]){teleName.textContent=CHNAMES[sc-1]; teleName.dataset.text=CHNAMES[sc-1]; teleName.dataset.decoded=''; decode(teleName);}
 }
 /* Chapters in footage seconds; w = scroll weight (more scroll per second of footage), hold = extra scroll on the last frame of the chapter. Cumulative table built once. */
@@ -255,7 +255,7 @@ addEventListener('resize',()=>{ const pBefore=progress(); measure(); const y=her
 applyMode();
 
 /* ---------- v37e: scene rests: when scrolling stops inside the journey, the page glides to the nearest scene ---------- */
-const RESTS=[{t:0},{t:2.6},{t:6.2},{t:10.04,hold:.45},{t:12.9},{t:17.8},{t:25.0},{t:31.4},{t:VIDEO_DURATION,hold:.35}];
+const RESTS=[{t:0},{t:6.2},{t:10.04,hold:.45},{t:12.9},{t:17.8},{t:25.0},{t:VIDEO_DURATION,hold:.35}]; /* one rest per scene: Aanrijden, Binnenkant, Onderdelen, Terug in de rij, Uit het magazijn, Naar Nederland, Bezorggebied */
 function scrollForTime(t,holdFrac){
   if(holdFrac!=null){ const h=PACE.find(r=>r.t0===r.t1&&Math.abs(r.t0-t)<1e-6); if(h) return h.s0+(h.s1-h.s0)*holdFrac; }
   for(const r of PACE){ if(r.t1>r.t0&&t>=r.t0&&t<=r.t1){ let lo=r.s0,hi=r.s1; for(let i=0;i<32;i++){ const mid=(lo+hi)/2; if(paceMap(mid)*VIDEO_DURATION<t)lo=mid; else hi=mid; } return (lo+hi)/2; } }
