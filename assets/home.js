@@ -293,9 +293,9 @@ function nearestRestIndex(ps){ let b=0,bd=9; for(let i=0;i<restPs.length;i++){ c
 function glide(y1,dur){
   cancelSettle(); const y0=scrollY; if(Math.abs(y1-y0)<2)return;
   if(mode==='frames'){ prioritiseFrames(clamp((y0-heroTop)/range,0,1),clamp((y1-heroTop)/range,0,1)); openFull(); }
-  /* v38b */ /* v38c */ /* v42 */ document.documentElement.classList.remove('snap'); const t0=performance.now(), ease=bezierEase; const st={raf:0}; pageAnim=st; gliding=true; WIN_AHEAD=16; WIN_BACK=2; MAX_INFLIGHT=4;
+  /* v38b */ /* v38c */ /* v42 */ /* v43 */ document.documentElement.classList.remove('snap'); const t0=performance.now(), ease=bezierEase; const st={raf:0}; pageAnim=st; gliding=true; WIN_AHEAD=16; WIN_BACK=2; MAX_INFLIGHT=4;
   const step=now=>{ if(pageAnim!==st)return; const t=clamp((now-t0)/dur,0,1); scrollTo(0,Math.round(y0+(y1-y0)*ease(t)));
-    if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; gliding=false; WIN_AHEAD=10; WIN_BACK=4; MAX_INFLIGHT=3; cooldownUntil=performance.now()+650; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')); } };
+    if(t<1)st.raf=requestAnimationFrame(step); else { pageAnim=null; gliding=false; WIN_AHEAD=10; WIN_BACK=4; MAX_INFLIGHT=3; cooldownUntil=performance.now()+650; document.documentElement.classList.toggle('snap',document.body.classList.contains('scrolled-page')&&finePointer.matches); } };
   st.raf=requestAnimationFrame(step);
 }
 function pageScene(dir){
@@ -306,7 +306,8 @@ function pageScene(dir){
   const dt=Math.abs(RESTS[i].t-RESTS[cur].t)||2; glide(Math.round(hero.offsetTop+restPs[i]*range),clamp(dt*440,1400,3000)); return true;
 }
 function pagingActive(dir){
-  if(reduce.matches||!heroOnScreen)return false; const b=document.body.classList; if(b.contains('intro-lock')||b.contains('menu-open'))return false;
+  if(reduce.matches)return false; const b=document.body.classList; if(b.contains('intro-lock')||b.contains('menu-open'))return false;
+  const hb=hero.getBoundingClientRect().bottom; if(hb<-1)return false;   /* v43: hero fully above the viewport -> not active */
   const ps=progress(); if(ps>=1&&dir>0)return false; if(ps<=0&&dir<0)return false; return true;
 }
 /* v42: blocks page per wheel tick on desktop; the hero end and the first block hand over to each other */
@@ -318,9 +319,10 @@ function pageBlock(dir){
   const b=document.body.classList; if(b.contains('menu-open')||reduce.matches)return false;
   if(dir<0&&i===0){ return pageScene(-1); }
   const target=dir>0?blockList[i+1]:blockList[i-1];
-  const y=target?Math.round(scrollY+target.getBoundingClientRect().top):(dir>0?document.documentElement.scrollHeight-innerHeight:null);
+  const foot=document.querySelector('footer');
+  const y=target?Math.round(scrollY+target.getBoundingClientRect().top):(dir>0&&foot?Math.min(Math.round(scrollY+foot.getBoundingClientRect().top),document.documentElement.scrollHeight-innerHeight):null);
   if(y===null||Math.abs(y-scrollY)<2)return false;
-  blockAnim=performance.now()+700; cooldownUntil=blockAnim; scrollTo({top:y,behavior:'smooth'}); return true;
+  /* v43 */ glide(y,720); return true;
 }
 addEventListener('wheel',e=>{ const dir=e.deltaY>0?1:e.deltaY<0?-1:0; if(!dir||e.ctrlKey)return;
   const now=performance.now(), d=Math.abs(e.deltaY); const accel=d>lastWheelD*1.05||now-lastWheelT>220; lastWheelT=now; lastWheelD=d; /* v42b: also tracked while swallowing, so an inertia tail is never mistaken for a new gesture */
@@ -329,8 +331,13 @@ addEventListener('wheel',e=>{ const dir=e.deltaY>0?1:e.deltaY<0?-1:0; if(!dir||e
   if(finePointer.matches&&document.body.classList.contains('scrolled-page')){ const i=currentBlockIndex(); if(i>=0){ e.preventDefault(); if(!accel||d<6)return; pageBlock(dir); } }
 },{passive:false});
 addEventListener('touchstart',e=>{ if(mode==='frames'&&heroOnScreen)openFull(); if(e.touches.length!==1){touchY=null;return} touchY=e.touches[0].clientY; touchDone=false; },{passive:true});
-document.addEventListener('touchmove',e=>{ if(pageAnim){ e.preventDefault(); return; } if(touchY===null||e.touches.length!==1)return; const dy=touchY-e.touches[0].clientY; const dir=dy>0?1:-1; if(!pagingActive(dir))return; e.preventDefault();
-  if(touchDone||Math.abs(dy)<22)return; touchDone=true; pageScene(dir); },{passive:false});
+document.addEventListener('touchmove',e=>{ if(pageAnim){ e.preventDefault(); return; } if(touchY===null||e.touches.length!==1)return; const dy=touchY-e.touches[0].clientY; const dir=dy>0?1:-1;
+  if(pagingActive(dir)){ e.preventDefault(); if(touchDone||Math.abs(dy)<22)return; touchDone=true; pageScene(dir); return; }
+  /* v43: blocks page per swipe on touch devices; the footer scrolls natively */
+  if(document.body.classList.contains('scrolled-page')&&!document.body.classList.contains('menu-open')){ const i=currentBlockIndex(); if(i>=0){ e.preventDefault(); if(touchDone||Math.abs(dy)<22)return; touchDone=true; pageBlock(dir); return; }
+    /* v43b: not aligned (e.g. inside the footer or after a native scroll): a swipe glides to the nearest block in that direction; nothing below -> native */
+    const t=nearestBlockInDir(dir); if(t){ e.preventDefault(); if(touchDone||Math.abs(dy)<22)return; touchDone=true; glide(Math.round(scrollY+t.getBoundingClientRect().top),720); } } },{passive:false});
+function nearestBlockInDir(dir){ const secs=blockList||(blockList=Array.from(document.querySelectorAll('main > section:not(#hero)'))); let best=null,bd=1e9; for(const s of secs){ const top=s.getBoundingClientRect().top; if(dir>0?top>2:top<-2){ const d=Math.abs(top); if(d<bd){bd=d;best=s} } } return best; }
 addEventListener('touchend',()=>{ touchY=null; },{passive:true});
 addEventListener('keydown',e=>{ if(e.target&&(e.target.matches('input,textarea,select,button,a')||e.target.isContentEditable))return; const k=e.key; const dir=(k==='ArrowDown'||k==='PageDown'||k===' ')?1:(k==='ArrowUp'||k==='PageUp')?-1:0; if(!dir)return;
   if(pageAnim||performance.now()<cooldownUntil){ e.preventDefault(); return; }
@@ -387,7 +394,7 @@ addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.con
 function goTo(hash){ if(hash==='#top'||hash==='#bezorging'){ document.documentElement.classList.remove('snap'); hdrSolid=false; document.body.classList.remove('scrolled-page'); } if(hash==='#top'){scrollTo(0,0);return} if(hash==='#bezorging'){ measure(); scrollTo(0,hero.offsetTop+range*0.94); return } const t=document.querySelector(hash); if(t)t.scrollIntoView(); }
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{ const hash=a.getAttribute('href'); if(hash.length<2)return; e.preventDefault(); const wasOpen=document.body.classList.contains('menu-open'); if(wasOpen)setMenu(false); setTimeout(()=>goTo(hash),wasOpen?260:0); }));
 document.addEventListener('touchmove',e=>{ if(document.body.classList.contains('intro-lock'))e.preventDefault(); else if(document.body.classList.contains('menu-open')&&!e.target.closest('.menu-panel'))e.preventDefault(); },{passive:false});
-let hdrSolid=false; const hdrState=()=>{ const s=scrollY>heroTop+range-4; if(s!==hdrSolid){hdrSolid=s;document.body.classList.toggle('scrolled-page',s);document.documentElement.classList.toggle('snap',s&&!pageAnim)} }; addEventListener('scroll',hdrState,{passive:true}); hdrState();
+let hdrSolid=false; const hdrState=()=>{ const s=scrollY>heroTop+range-4; if(s!==hdrSolid){hdrSolid=s;document.body.classList.toggle('scrolled-page',s);document.documentElement.classList.toggle('snap',s&&!pageAnim&&finePointer.matches)} }; addEventListener('scroll',hdrState,{passive:true}); hdrState();
 /* the first caption rises only after the intro, so the title lands on a settled stage */
 const band1=bands[0]; if(band1&&!reduce.matches){ band1Floor=0; band1.el.style.setProperty('--k',0); band1.k=0; const rise=()=>{ const t0=performance.now(); const step=now=>{ const t=clamp((now-t0)/900,0,1); band1Floor=Math.round(100*t)/100; if(band1.o>0){ band1.k=band1Floor; band1.el.style.setProperty('--k',band1.k); } if(t<1)requestAnimationFrame(step); else band1Floor=1; }; requestAnimationFrame(step); }; if(document.body.classList.contains('intro-done'))rise(); else new MutationObserver((m,o)=>{ if(document.body.classList.contains('intro-done')){o.disconnect();setTimeout(rise,350)} }).observe(document.body,{attributes:true,attributeFilter:['class']}); }
 document.querySelectorAll('#holoParts .nm[data-name]').forEach(n=>{n.textContent=n.dataset.name});
