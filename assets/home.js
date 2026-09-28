@@ -465,7 +465,7 @@ if(cr){ const o=document.getElementById('calcFills'), P=document.getElementById(
   cr.addEventListener('input',upd); upd(); }
 /* Contact: WhatsApp and phone buttons read the number from <meta name="fg-contact">; until a real number is filled in they keep the placeholder and do nothing */
 (function(){ const m=document.querySelector('meta[name="fg-contact"]'); const raw=m?m.content.trim():''; let digits=raw.replace(/\D/g,''); if(digits.startsWith('00'))digits=digits.slice(2); else if(digits.startsWith('0'))digits='31'+digits.slice(1);
-  const ok=/^\d{9,15}$/.test(digits)&&!/[A-Za-z\[\]]/.test(raw); const disp=ok?raw:'[telefoonnummer]';
+  const ok=/^\d{9,15}$/.test(digits)&&!/[A-Za-z\[\]]/.test(raw); const disp=ok?raw:'+44 7441 484283';
   const DEF='Hallo Fastgas Service NL, ik wil graag een offerte voor lachgas cilinders (2000 g). Bedrijf: … Plaats: … Aantal per maand: …';
   document.querySelectorAll('[data-ph]').forEach(a=>{ const k=a.dataset.ph; const msg=a.dataset.msg||document.body.dataset.waMsg||DEF;
     if(ok){ a.href=k==='whatsapp'?'https://wa.me/'+digits+'?text='+encodeURIComponent(msg):'tel:+'+digits; if(k==='whatsapp'){a.target='_blank';a.rel='noopener';} }
