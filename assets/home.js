@@ -332,6 +332,7 @@ addEventListener('wheel',e=>{ const dir=e.deltaY>0?1:e.deltaY<0?-1:0; if(!dir||e
 },{passive:false});
 addEventListener('touchstart',e=>{ if(mode==='frames'&&heroOnScreen)openFull(); if(e.touches.length!==1){touchY=null;return} touchY=e.touches[0].clientY; touchDone=false; },{passive:true});
 document.addEventListener('touchmove',e=>{ if(pageAnim){ e.preventDefault(); return; } if(touchY===null||e.touches.length!==1)return; const dy=touchY-e.touches[0].clientY; const dir=dy>0?1:-1;
+  if(Math.abs(dy)<12&&e.target&&e.target.closest&&e.target.closest('a,button'))return;   /* v47: a tap on a link or button (tiny movement) is never swallowed */
   if(pagingActive(dir)){ e.preventDefault(); if(touchDone||Math.abs(dy)<22)return; touchDone=true; pageScene(dir); return; }
   /* v43: blocks page per swipe on touch devices; the footer scrolls natively */
   if(document.body.classList.contains('scrolled-page')&&!document.body.classList.contains('menu-open')){ const i=currentBlockIndex(); if(i>=0){ e.preventDefault(); if(touchDone||Math.abs(dy)<22)return; touchDone=true; pageBlock(dir); return; }
