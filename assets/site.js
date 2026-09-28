@@ -38,6 +38,7 @@ if(intro){ if(reduce.matches){intro.remove();document.body.classList.add('intro-
     if(ok){ a.href=k==='whatsapp'?'https://wa.me/'+digits+'?text='+encodeURIComponent(msg):'tel:+'+digits; if(k==='whatsapp'){a.target='_blank';a.rel='noopener';} }
     else { a.href='#'; a.setAttribute('aria-disabled','true'); a.addEventListener('click',e=>{ e.preventDefault(); a.classList.remove('nudge'); void a.offsetWidth; a.classList.add('nudge'); }); }
     a.querySelectorAll('.ph').forEach(s=>s.textContent=disp); });
+  if(ok) document.querySelectorAll('.ph').forEach(s=>{ if(!s.closest('[data-ph]')) s.textContent=disp; });   /* v45: number also in running text */
 })();
 const rv=new IntersectionObserver(es=>{ for(const e of es){ if(!e.isIntersecting)continue; e.target.classList.add('in'); (e.target.matches('.kicker')?[e.target]:Array.from(e.target.querySelectorAll('.kicker'))).forEach(decode); rv.unobserve(e.target); } },{threshold:0.15});
 document.querySelectorAll('.rv').forEach(el=>rv.observe(el));

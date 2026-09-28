@@ -471,6 +471,7 @@ if(cr){ const o=document.getElementById('calcFills'), P=document.getElementById(
     if(ok){ a.href=k==='whatsapp'?'https://wa.me/'+digits+'?text='+encodeURIComponent(msg):'tel:+'+digits; if(k==='whatsapp'){a.target='_blank';a.rel='noopener';} }
     else { a.href='#'; a.setAttribute('aria-disabled','true'); a.addEventListener('click',e=>{ e.preventDefault(); a.classList.remove('nudge'); void a.offsetWidth; a.classList.add('nudge'); }); }
     a.querySelectorAll('.ph').forEach(s=>s.textContent=disp); });
+  if(ok) document.querySelectorAll('.ph').forEach(s=>{ if(!s.closest('[data-ph]')) s.textContent=disp; });   /* v45: number also in running text */
 })();
 },30);
 })();
