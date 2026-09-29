@@ -30,15 +30,17 @@ if(intro){ if(reduce.matches){intro.remove();document.body.classList.add('intro-
 (function(){ const f=document.getElementById('cform'); if(!f)return; f.addEventListener('submit',e=>{ if(!f.reportValidity())return; if(f._gotcha&&f._gotcha.value)return; e.preventDefault(); const btn=f.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Versturen…';
   fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}}).then(r=>{ if(!r.ok)throw new Error('http '+r.status); f.querySelector('.ok').textContent='Dank je, '+(f.naam.value||'').trim()+'. Je bericht is verstuurd; we reageren via WhatsApp of e-mail. Spoed? App of bel, dag en nacht.'; f.classList.add('sent'); })
   .catch(()=>{ btn.disabled=false; btn.textContent='Verstuur bericht'; let er=f.querySelector('.err'); if(!er){ er=document.createElement('p'); er.className='err'; f.querySelector('.f').appendChild(er); } er.textContent='Versturen lukte niet. Probeer het opnieuw of app ons direct.'; }); }); })();
-/* Contact: WhatsApp and phone buttons read the number from <meta name="fg-contact">; until a real number is filled in they keep the placeholder and do nothing */
-(function(){ const m=document.querySelector('meta[name="fg-contact"]'); const raw=m?m.content.trim():''; let digits=raw.replace(/\D/g,''); if(digits.startsWith('00'))digits=digits.slice(2); else if(digits.startsWith('0'))digits='31'+digits.slice(1);
-  const ok=/^\d{9,15}$/.test(digits)&&!/[A-Za-z\[\]]/.test(raw); const disp=ok?raw:'[telefoonnummer]';
+/* Contact: phone buttons read the number from <meta name="fg-contact">, WhatsApp buttons from <meta name="fg-whatsapp"> (falls back to fg-contact); until a real number is filled in they keep the placeholder and do nothing */
+(function(){ const read=n=>{ const m=document.querySelector('meta[name="'+n+'"]'); const raw=m?m.content.trim():''; let digits=raw.replace(/\D/g,''); if(digits.startsWith('00'))digits=digits.slice(2); else if(digits.startsWith('0'))digits='31'+digits.slice(1); const ok=/^\d{9,15}$/.test(digits)&&!/[A-Za-z\[\]]/.test(raw); return {raw,digits,ok}; };
+  const tel=read('fg-contact'); const waM=read('fg-whatsapp'); const wa=waM.ok?waM:tel;
+  const disp=tel.ok?tel.raw:'[telefoonnummer]'; const dispW=wa.ok?wa.raw:disp;
   const DEF='Zijn jullie actief?';
-  document.querySelectorAll('[data-ph]').forEach(a=>{ const k=a.dataset.ph; const msg=a.dataset.msg||document.body.dataset.waMsg||DEF;
-    if(ok){ a.href=k==='whatsapp'?'https://wa.me/'+digits+'?text='+encodeURIComponent(msg):'tel:+'+digits; if(k==='whatsapp'){a.target='_blank';a.rel='noopener';} }
+  document.querySelectorAll('[data-ph]').forEach(a=>{ const k=a.dataset.ph; const msg=a.dataset.msg||document.body.dataset.waMsg||DEF; const n=k==='whatsapp'?wa:tel;
+    if(n.ok){ a.href=k==='whatsapp'?'https://wa.me/'+n.digits+'?text='+encodeURIComponent(msg):'tel:+'+n.digits; if(k==='whatsapp'){a.target='_blank';a.rel='noopener';} }
     else { a.href='#'; a.setAttribute('aria-disabled','true'); a.addEventListener('click',e=>{ e.preventDefault(); a.classList.remove('nudge'); void a.offsetWidth; a.classList.add('nudge'); }); }
-    a.querySelectorAll('.ph').forEach(s=>s.textContent=disp); });
-  if(ok) document.querySelectorAll('.ph').forEach(s=>{ if(!s.closest('[data-ph]')) s.textContent=disp; });   /* v45: number also in running text */
+    a.querySelectorAll('.ph').forEach(s=>s.textContent=k==='whatsapp'?dispW:disp); a.querySelectorAll('.phw').forEach(s=>s.textContent=dispW); });
+  if(tel.ok) document.querySelectorAll('.ph').forEach(s=>{ if(!s.closest('[data-ph]')) s.textContent=disp; });   /* v45: number also in running text */
+  if(wa.ok) document.querySelectorAll('.phw').forEach(s=>{ if(!s.closest('[data-ph]')) s.textContent=dispW; });
 })();
 const rv=new IntersectionObserver(es=>{ for(const e of es){ if(!e.isIntersecting)continue; e.target.classList.add('in'); (e.target.matches('.kicker')?[e.target]:Array.from(e.target.querySelectorAll('.kicker'))).forEach(decode); rv.unobserve(e.target); } },{threshold:0.15});
 document.querySelectorAll('.rv').forEach(el=>rv.observe(el));
